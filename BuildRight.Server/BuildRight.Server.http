@@ -1,0 +1,6 @@
+@BuildRight.Server_HostAddress = http://localhost:5080
+
+GET {{BuildRight.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
