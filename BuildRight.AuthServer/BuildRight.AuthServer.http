@@ -1,0 +1,6 @@
+@BuildRight.AuthServer_HostAddress = http://localhost:5207
+
+GET {{BuildRight.AuthServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
