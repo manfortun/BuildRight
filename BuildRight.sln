@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "buildright.client", "buildright.client\buildright.client.esproj", "{25755927-9138-45A6-90FD-3952EF7AA1EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildRight.AuthServer", "BuildRight.AuthServer\BuildRight.AuthServer.csproj", "{C54F3B2C-FA76-4E04-910C-6210AFDBA47A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildRight.AuthServer", "BuildRight.AuthServer\BuildRight.AuthServer.csproj", "{C54F3B2C-FA76-4E04-910C-6210AFDBA47A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildRight.ContentManagement", "BuildRight.ContentManagement\BuildRight.ContentManagement.csproj", "{B6BDCDFA-5024-45CD-A57C-E937DEE6B991}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{C54F3B2C-FA76-4E04-910C-6210AFDBA47A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C54F3B2C-FA76-4E04-910C-6210AFDBA47A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C54F3B2C-FA76-4E04-910C-6210AFDBA47A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6BDCDFA-5024-45CD-A57C-E937DEE6B991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6BDCDFA-5024-45CD-A57C-E937DEE6B991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6BDCDFA-5024-45CD-A57C-E937DEE6B991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6BDCDFA-5024-45CD-A57C-E937DEE6B991}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

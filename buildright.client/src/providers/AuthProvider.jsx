@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         } else {
             logout();
         }
-    });
+    }, []);
 
     const logout = () => {
         Cookies.remove(AUTH_COOKIE);
