@@ -1,13 +1,22 @@
-const BorderContainer = ({ children, clickable = false }) => {
+import './styles/servicehighlight.css';
+
+const BorderContainer = ({ children, clickable = false, height = "auto", backgroundSrc = "" }) => {
     const style = {
-        border: 'gray 1px solid',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        border: '#ddd 1px solid',
         padding: '1rem',
-        borderRadius: '1rem',
-        cursor: clickable ? 'pointer' : 'none',
-        pointerEvents: clickable ? 'default' : 'none'
+        pointerEvents: clickable ? 'default' : 'none',
+        backgroundColor: 'white',
+        height: height
     }
     return (
-        <div style={style}>
+        <div style={style} className="service-highlight">
+            {backgroundSrc.length > 0 && (
+                <img src={`/assets/${backgroundSrc}`} className="service-highlight-img" />
+            )}
             {children}
         </div>
     )

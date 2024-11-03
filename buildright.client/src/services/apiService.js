@@ -4,7 +4,6 @@ import { BASE_URL_AUTH, BASE_URL_CONTENT } from "../util/constants";
 export const fetchData = async (api, endpoint, options = {}) => {
     const url = `${api}/${endpoint}`;
     const response = await fetch(url, options);
-
     if (!response.ok) {
         let errorDetails;
 

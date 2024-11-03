@@ -1,6 +1,10 @@
+import Page from "../../components/Page";
+
 const Home = () => {
     return (
-        <div>This is the admin page.</div>
+        <Page>
+            <div>This is the admin page.</div>
+        </Page>
     )
 }
 

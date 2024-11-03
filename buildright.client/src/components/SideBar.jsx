@@ -3,10 +3,15 @@ import './styles/sidebar.css';
 
 const SideBar = ({ children, height }) => {
     const [isSidebarShown, setIsSidebarShown] = useState(true);
+    let lastScroll = 0;
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsSidebarShown(window.scrollY === 0);
+            const scroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            setIsSidebarShown(scroll < lastScroll);
+
+            lastScroll = scroll <= 0 ? 0 : scroll;
         }
 
         const eventName = 'scroll';
@@ -15,8 +20,12 @@ const SideBar = ({ children, height }) => {
     }, []);
 
     return (
-        <div className={ `sidebar-base${isSidebarShown ? '' : ' disappear'}` } style={{height: height} }>
-            { children }
+        <div id="sidebar" className={`sidebar-base${isSidebarShown ? '' : ' disappear'}`} style={{ height: height }}>
+            {children && children.length > 0 && children.map((child, index) => (
+                <div className="p-2" key={index }>
+                    {child}
+                </div>
+            )) }
         </div>
     )
 };

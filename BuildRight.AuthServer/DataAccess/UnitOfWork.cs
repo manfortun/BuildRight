@@ -1,4 +1,4 @@
-﻿using BuildRight.AuthServer.Models;
+﻿//using BuildRight.AuthServer.Models;
 
 namespace BuildRight.AuthServer.DataAccess;
 
@@ -6,9 +6,9 @@ public class UnitOfWork : IDisposable
 {
     private bool _isDisposed = false;
     private readonly AppDbContext _context;
-    private BaseRepository<User> _users = default!;
+    //private BaseRepository<User> _users = default!;
 
-    public BaseRepository<User> Users => _users ??= new BaseRepository<User>(_context);
+    //public BaseRepository<User> Users => _users ??= new BaseRepository<User>(_context);
 
     public UnitOfWork(AppDbContext context)
     {

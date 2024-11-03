@@ -1,17 +1,11 @@
 import { useEffect } from "react";
+import './styles/arraydisplay.css';
 
-const ArrayDisplay = ({ children }) => {
+const ArrayDisplay = ({ children, noOfColumns = 3, maxItems = -1, gap = "20px" }) => {
 
     return (
-        <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            justifyContent: 'center',
-            gap: '20px',
-            width: '100%',
-            padding: '1rem'
-        }}>
-            { children }
+        <div className="array" style={{ gridTemplateColumns: `repeat(${Math.min(children.length, noOfColumns)}, 1fr)`, gap: gap }}>
+            { maxItems < 0 ? children : children.slice(0, maxItems) }
         </div>
     )
 };

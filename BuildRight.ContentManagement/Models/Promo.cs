@@ -10,5 +10,6 @@ public class Promo : IObject
     public string Description { get; set; } = string.Empty;
     [Required] public DateTime StartDate { get; set; } = DateTime.MinValue;
     [Required] public DateTime EndDate { get; set; } = DateTime.MinValue;
+    public string Image { get; set; } = string.Empty;
     public bool IsClickable { get; set; } = true;
 }

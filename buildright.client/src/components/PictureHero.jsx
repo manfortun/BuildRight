@@ -5,7 +5,7 @@ const PictureHero = ({ src, height = "800px", alt = "" }) => {
 
     return (
         <Hero alt={alt }>
-            <div style={{ backgroundImage: `url('${src}')`, width: "100%", height: `${height}`, backgroundSize: "cover", backgroundPosition: "center" }} />
+            <div style={{ backgroundImage: `url('/assets/${src}')`, width: "100%", height: `${height}`, backgroundSize: "cover", backgroundPosition: "center" }} />
         </Hero>
     )
 };

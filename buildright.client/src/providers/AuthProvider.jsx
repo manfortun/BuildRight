@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
-import { AUTH_COOKIE } from "../util/constants";
+import { AUTH_COOKIE, BASE_URL_AUTH } from "../util/constants";
 import { fetchData, fetchOptions } from "../services/apiService";
 
 export const AuthContext = createContext();
@@ -19,9 +19,9 @@ export const AuthProvider = ({ children }) => {
 
         if (token) {
             saveToken(token);
-            setSession(current => ({ ...current, accessToken: token, loading: false }));
         } else {
             logout();
+            setSession(current => ({ ...current, loading: false }));
         }
     }, []);
 
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
             Cookies.set(AUTH_COOKIE, token, { expires: expiration });
 
             const decodedUser = jwtDecode(token);
-            setSession(current => ({ ...current, user: decodedUser, isLoggedIn: true }));
+            setSession(current => ({ ...current, user: decodedUser, loading: false, isLoggedIn: true }));
         } catch (err) {
             console.error(err);
         }
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
             }
         });
 
-        const { status, response } = await fetchData('Account/Signup', options);
+        const { status, response } = await fetchData(BASE_URL_AUTH, 'Auth/Signup', options);
 
         if (status && response.token) {
             saveToken(response.token);
@@ -90,14 +90,18 @@ export const AuthProvider = ({ children }) => {
     }
 
     const login = async ({ email, password }) => {
-        const options = fetchOptions('POST', { email, password })
-        const { status, response } = await fetchData('Account/Login', options);
+        const options = fetchOptions({ email, password }, 'POST');
+        const { status, response } = await fetchData(BASE_URL_AUTH, 'Auth/Login', options);
 
         if (status && response.token) {
             saveToken(response.token);
         }
 
         return { status, response };
+    }
+
+    if (session.loading) {
+        return <p>Loading...</p>;
     }
 
     return (

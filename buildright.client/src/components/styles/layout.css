@@ -1,0 +1,7 @@
+a {
+    text-decoration: none!important;
+    color: black!important;
+    cursor: pointer!important;
+    font-weight: 100!important;
+    transition: all ease-out 0.4s!important;
+}

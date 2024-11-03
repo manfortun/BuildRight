@@ -1,8 +1,10 @@
 ﻿#root {
-    height: 100vh;
-    overflow: clip;
     width: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    position: relative;
 }
 
 th, td {

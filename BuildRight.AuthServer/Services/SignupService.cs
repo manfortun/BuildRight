@@ -1,6 +1,6 @@
 ﻿using BuildRight.AuthServer.DataAccess;
 using BuildRight.AuthServer.DTOs;
-using BuildRight.AuthServer.Models;
+//using BuildRight.AuthServer.Models;
 using BuildRight.AuthServer.ResultModels;
 using Microsoft.AspNetCore.Identity;
 
@@ -43,7 +43,7 @@ public class SignupService
             return new InvalidSignup(errors);
         }
 
-        return this.CreateUserInformation(identityUser, request.UserInformation);
+        return new SuccessfulSignup(identityUser);
     }
 
     /// <summary>
@@ -56,15 +56,15 @@ public class SignupService
     {
         try
         {
-            User user = new User
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                IdentityId = identityUser.Id,
-            };
+            //User user = new User
+            //{
+            //    FirstName = request.FirstName,
+            //    LastName = request.LastName,
+            //    IdentityId = identityUser.Id,
+            //};
 
-            _unitOfWork.Users.Insert(user);
-            _unitOfWork.Save();
+            //_unitOfWork.Users.Insert(user);
+            //_unitOfWork.Save();
 
             return new SuccessfulSignup(identityUser);
         }

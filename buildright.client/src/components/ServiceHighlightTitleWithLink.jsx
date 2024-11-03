@@ -1,13 +1,10 @@
-import { useEffect } from "react";
 import BorderContainer from "./BorderContainer";
 
-const ServiceHighlightTitleWithLink = ({ label, description, href }) => {
-    useEffect(() => {
-        console.log(href);
-    }, []);
+const ServiceHighlightTitleWithLink = ({ label, description, href, height = "auto", backgroundSrc = "" }) => {
+
     return (
-        <BorderContainer clickable={true}>
-            <a href={href} style={{ all: 'unset'} }>
+        <BorderContainer clickable={true} backgroundSrc={backgroundSrc} height={height}>
+            <a href={href} style={{zIndex: '1'} }>
                 <h4>{label}</h4>
                 {description && description.length > 0 && (
                     <i>{description}</i>

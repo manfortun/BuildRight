@@ -3,6 +3,7 @@ using BuildRight.ContentManagement.DataAccess;
 using BuildRight.ContentManagement.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 
 namespace BuildRight.ContentManagement
 {
@@ -23,12 +24,18 @@ namespace BuildRight.ContentManagement
                     };
                 });
 
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Database"))
+                    .UseLazyLoadingProxies());
 
             builder.Services
                 .AddTransient<ContentService>()
-                .AddTransient<PromoService>();
+                .AddTransient<PromoService>()
+                .AddTransient<ProductService>()
+                .AddTransient<RatingService>()
+                .AddTransient<PartnerService>();
 
             builder.Services.AddCors(options =>
             {

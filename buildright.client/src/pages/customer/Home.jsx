@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import ArrayDisplay from "../../components/ArrayDisplay";
-import Footer from "../../components/Footer";
 import Page from "../../components/Page";
 import PictureHeroWithTitle from "../../components/PictureHeroWithTitle";
 import PromoBar from "../../components/PromoBar";
 import Section from "../../components/Section";
 import SectionTitle from "../../components/SectionTitle";
 import ServiceHighlightTitle from "../../components/ServiceHighlightTitle";
+import ServiceHighlightTitleWithLink from "../../components/ServiceHighlightTitleWithLink";
 import { fetchData, fetchOptions } from "../../services/apiService";
 import { BASE_URL_CONTENT } from "../../util/constants";
-import ServiceHighlightTitleWithLink from "../../components/ServiceHighlightTitleWithLink";
+import ImageWithLink from "../../components/ImageWithLink";
+import SlantedArrayDisplay from "../../components/SlantedArrayDisplay";
+import SlantedArrayDisplayItem from "../../components/SlantedArrayDisplayItem";
 
 const Home = () => {
     const [landingPage, setLandingPage] = useState({});
 
     useEffect(() => {
-
         const getLandingPage = async () => {
             const options = fetchOptions();
             const { status, response } = await fetchData(BASE_URL_CONTENT, 'Services/LandingPage', options);
@@ -25,7 +26,6 @@ const Home = () => {
             }
 
             setLandingPage(response);
-            console.log(response);
         }
 
         getLandingPage();
@@ -34,21 +34,20 @@ const Home = () => {
     return (
         <Page>
 
-            {landingPage.promotions && landingPage.promotions.length > 0 && (
-                <PromoBar content={landingPage.promotions[0].title} clickable={landingPage.promotions[0].isClickable} />
-            )}
+            <PictureHeroWithTitle src="hero.jpg" alt="This is the picture hero" textColor="white" />
 
-            <Section>
-                <PictureHeroWithTitle src="/assets/hero.jpg" alt="This is the picture hero" textColor="white" />
-            </Section>
+
+            {landingPage.promotions && landingPage.promotions.length > 0 && (
+                <PromoBar image={landingPage.promotions[0].image} clickable={landingPage.promotions[0].isClickable} />
+            )}
 
             {landingPage.primaryServices && (
                 <Section>
                     <SectionTitle label="Our Services" />
-                    <ArrayDisplay>
+                    <ArrayDisplay noOfColumns="6" gap="0px">
                         {landingPage.primaryServices.map(service => {
                             if (service.isClickable) {
-                                return <ServiceHighlightTitleWithLink key={service.title} label={service.title} href={service.url} />;
+                                return <ServiceHighlightTitleWithLink key={service.title} label={service.title} href={service.url} height="400px" backgroundSrc="hero.jpg"/>;
                             } else {
                                 return <ServiceHighlightTitle key={service.title} label={service.title} />;
                             }
@@ -58,7 +57,7 @@ const Home = () => {
             )}
 
             {landingPage.usps && (
-                <Section>
+                <Section backgroundColor="#f9f9f9">
                     <SectionTitle label="Why choose us?" />
                     <ArrayDisplay>
                         {landingPage.usps.map(usp => (
@@ -68,9 +67,16 @@ const Home = () => {
                 </Section>
             )}
 
-
-            <Footer />
-
+            {landingPage.partners && (
+                <Section >
+                    <SectionTitle label="Our Business Partners" />
+                    <ArrayDisplay>
+                        {landingPage.partners.map(partner => (
+                            <ImageWithLink title={partner.title} src={partner.image} link={partner.url} />
+                        )) }
+                    </ArrayDisplay>
+                </Section>
+            ) }
         </Page>
     )
 };

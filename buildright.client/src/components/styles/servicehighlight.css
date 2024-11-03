@@ -1,0 +1,16 @@
+.service-highlight {
+    overflow: clip;
+    position: relative;
+}
+
+.service-highlight-img {
+    position: absolute;
+    object-fit: cover;
+    background-position: center;
+    transition: all ease-out 0.3s;
+}
+
+.service-highlight:hover>.service-highlight-img {
+    filter: grayscale(1) blur(3px);
+    transform: scale(1.1);
+}

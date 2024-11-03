@@ -1,6 +1,6 @@
 const SectionTitle = ({ label }) => {
     return (
-        <h3 className="m-3">{label}</h3>
+        <h3 className="pb-5 mb-0">{label}</h3>
     )
 };
 
