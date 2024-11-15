@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import Footer from "./components/Footer";
+import FooterSection from "./components/FooterSection";
 import SideBar from "./components/SideBar";
 import SideBarPopupItem from "./components/SideBarPopupItem";
 import SideBarSubitem from "./components/SidebarSubitem";
 import './components/styles/layout.css';
 import { fetchData, fetchOptions } from "./services/apiService";
 import { BASE_URL_CONTENT } from "./util/constants";
-import Footer from "./components/Footer";
 
 const Layout = () => {
     const [primaryServices, setPrimaryServices] = useState([]);
@@ -46,7 +47,19 @@ const Layout = () => {
                     <SideBarSubitem title="Ventures" href="/ventures" />
                 </SideBarPopupItem>
             </SideBar>
-            <Footer />
+            <Footer >
+                <FooterSection title="Services">
+                    {primaryServices.length > 0 && primaryServices.map(service => (
+                        <a key={service.title} href={service.url } className="text-white">{service.title}</a>
+                    ))}
+                </FooterSection>
+                <FooterSection title="Resources">
+                    <a href="/about" className="text-white">About Us</a>
+                    <a href="/insights" className="text-white">Insights</a>
+                    <a href="/career" className="text-white">Career</a>
+                    <a href="/ventures" className="text-white">Ventures</a>
+                </FooterSection>
+            </Footer>
         </div>
     )
 }

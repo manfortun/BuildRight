@@ -1,9 +1,11 @@
 
 using BuildRight.ContentManagement.DataAccess;
 using BuildRight.ContentManagement.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace BuildRight.ContentManagement
 {
@@ -12,17 +14,32 @@ namespace BuildRight.ContentManagement
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            builder.Services.AddAuthentication("Bearer")
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:7146/api/Auth";
+                    options.Authority = builder.Configuration["Jwt:Issuer"];
+                    options.RequireHttpsMetadata = false;
+                    options.IncludeErrorDetails = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+
+                        ValidateLifetime = true,
+
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])),
+                        ValidateIssuerSigningKey = true
                     };
                 });
+
+            builder.Services.AddAuthorization();
 
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -42,7 +59,7 @@ namespace BuildRight.ContentManagement
                 options.AddPolicy("AllowSpecificOrigin",
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5173")
+                        builder.WithOrigins("https://localhost:5173", "https://localhost:7146")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -67,8 +84,9 @@ namespace BuildRight.ContentManagement
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

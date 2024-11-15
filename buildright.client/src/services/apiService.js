@@ -1,29 +1,24 @@
-import { BASE_URL_AUTH, BASE_URL_CONTENT } from "../util/constants";
-
-
 export const fetchData = async (api, endpoint, options = {}) => {
     const url = `${api}/${endpoint}`;
+
     const response = await fetch(url, options);
+
     if (!response.ok) {
-        let errorDetails;
-
-        try {
-            const errorResponse = await response.json();
-            errorDetails = errorResponse.errors || 'Unknown error occurred.';
-        } catch {
-            errorDetails = 'Failed to parse error response.';
-        }
-
-        return { status: false, response: errorDetails };
+        let statusText = response.statusText ? response.statusText : 'No response text.';
+        return { status: false, response: `${statusText} (${response.status})` };
     }
 
-    return { status: true, response: await response.json() };
+    try {
+        return { status: true, response: await response.json() };
+    } catch {
+        return { status: true, response: 'No response text.' };
+    }
 }
 
-export const fetchOptions = (body, method = 'GET') => {
+export const fetchOptions = (body, method = 'GET', headers = {'Content-Type': 'application/json'}) => {
     return {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: body === null ? null : JSON.stringify(body)
     };
 }

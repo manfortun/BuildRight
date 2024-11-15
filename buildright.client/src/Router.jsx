@@ -9,7 +9,6 @@ const Router = ({ component: Component, isAdmin = false, ...rest }) => {
     if (!isAdmin) {
         return <Layout {...rest} />;
     } else {
-        console.log('Is logged in: ', session.isLoggedIn);
         return session.isLoggedIn ?
             <Layout {...rest} /> :
             <Navigate to="/login" replace state={{ from: rest.location }} />;

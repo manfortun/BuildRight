@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /BuildRight.AuthServer/Migrations
 /BuildRight.ContentManagement/appsettings.Development.json
 /BuildRight.ContentManagement/appsettings.json
+/BuildRight.AuthServer/appsettings.json

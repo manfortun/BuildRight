@@ -1,13 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { Navigate } from "react-router-dom";
 import FloatingInput from "../../components/FloatingInput";
 import FormContainer from "../../components/FormContainer";
 import Page from "../../components/Page";
 import { AuthContext } from "../../providers/AuthProvider";
-import { useRef } from "react";
 
 const Login = () => {
     const loginBtn = useRef();
-    const { login, state } = useContext(AuthContext);
+    const { login, state, session } = useContext(AuthContext);
     const [error, setError] = useState();
     const [credentials, setCredentials] = useState({
         email: '',
@@ -37,6 +37,10 @@ const Login = () => {
         }
 
         loginBtn.current.disabled = false;
+    }
+
+    if (session.isLoggedIn) {
+        return <Navigate to="/admin" replace />;
     }
 
     return (

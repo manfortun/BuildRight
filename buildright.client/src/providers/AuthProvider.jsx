@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
-import { AUTH_COOKIE, BASE_URL_AUTH } from "../util/constants";
+import { AUTH_COOKIE, BASE_URL_AUTH, BASE_URL_CONTENT } from "../util/constants";
 import { fetchData, fetchOptions } from "../services/apiService";
 
 export const AuthContext = createContext();
@@ -21,13 +21,30 @@ export const AuthProvider = ({ children }) => {
             saveToken(token);
         } else {
             logout();
-            setSession(current => ({ ...current, loading: false }));
         }
     }, []);
 
+    useEffect(() => {
+        const testing = async () => {
+
+            if (session.isLoggedIn) {
+
+                const authHeader = getAuthHeader();
+
+                const options = fetchOptions(undefined, 'GET', authHeader);
+
+                const { response, status } = await fetchData(BASE_URL_CONTENT, 'Services/TestAuthorize', options);
+
+                console.log('Status: ', status, 'Response: ', response);
+            }
+        };
+
+        testing();
+    }, [session]);
+
     const logout = () => {
         Cookies.remove(AUTH_COOKIE);
-        setSession(current => ({ ...current, user: null, accessToken: "", isLoggedIn: false }));
+        setSession(current => ({ ...current, user: null, accessToken: "", loading: false, isLoggedIn: false }));
     }
 
     const saveToken = (token) => {
@@ -49,9 +66,8 @@ export const AuthProvider = ({ children }) => {
 
     const getAuthHeader = () => {
         return {
-            headers: {
-                'Authorization': `Bearer ${session.accessToken}`
-            }
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/json'
         };
     }
 

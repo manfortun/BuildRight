@@ -1,6 +1,7 @@
 ﻿using BuildRight.AuthServer.DTOs;
 using BuildRight.AuthServer.ResultModels;
 using BuildRight.AuthServer.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,5 +50,12 @@ public class AuthController : ControllerBase
         string token = await _tokenService.GenerateJwtToken(result.IdentityUser);
 
         return Ok(new { token });
+    }
+
+    [HttpGet(nameof(Test))]
+    [Authorize]
+    public IActionResult Test()
+    {
+        return Ok();
     }
 }

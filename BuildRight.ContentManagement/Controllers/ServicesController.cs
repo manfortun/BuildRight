@@ -1,4 +1,5 @@
 ﻿using BuildRight.ContentManagement.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildRight.ContentManagement.Controllers;
@@ -49,4 +50,10 @@ public class ServicesController : ControllerBase
         return Ok(new { primaryServices = services });
     }
 
+    [Authorize]
+    [HttpGet(nameof(TestAuthorize))]
+    public IActionResult TestAuthorize()
+    {
+        return Ok();
+    }
 }
