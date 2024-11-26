@@ -19,6 +19,10 @@ public class ServicesController : ControllerBase
         _partnerService = partnerService;
     }
 
+    /// <summary>
+    /// Details of the landing page.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet(nameof(LandingPage))]
     public IActionResult LandingPage()
     {
@@ -37,6 +41,10 @@ public class ServicesController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// The primary services.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet(nameof(PrimaryServices))]
     public IActionResult PrimaryServices()
     {
@@ -48,12 +56,5 @@ public class ServicesController : ControllerBase
         }
 
         return Ok(new { primaryServices = services });
-    }
-
-    [Authorize]
-    [HttpGet(nameof(TestAuthorize))]
-    public IActionResult TestAuthorize()
-    {
-        return Ok();
     }
 }

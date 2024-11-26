@@ -27,6 +27,10 @@ public class ProductsController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Products that have newly arrived
+    /// </summary>
+    /// <returns></returns>
     [HttpGet(nameof(NewArrivals))]
     public IActionResult NewArrivals()
     {
@@ -39,6 +43,7 @@ public class ProductsController : ControllerBase
 
         var products = _mapper.Map<List<ProductRead>>(newArrivals);
 
+        /// obtain the average rating of each obtained product
         foreach (var product in products)
         {
             product.AverageRating = _ratingService.GetAverageRating(_unitOfWork.Products, product.Id);

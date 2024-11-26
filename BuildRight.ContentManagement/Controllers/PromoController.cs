@@ -14,6 +14,10 @@ public class PromoController : ControllerBase
         _promoService = promoService;
     }
 
+    /// <summary>
+    /// The promotions.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Promos()
     {
