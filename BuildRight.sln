@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "buildright.client", "buildright.client\buildright.client.esproj", "{25755927-9138-45A6-90FD-3952EF7AA1EC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B6BDCDFA-5024-45CD-A57C-E937DEE6B991} = {B6BDCDFA-5024-45CD-A57C-E937DEE6B991}
+		{C2E1C76D-1666-4F09-9344-A4A2735C252E} = {C2E1C76D-1666-4F09-9344-A4A2735C252E}
+		{C54F3B2C-FA76-4E04-910C-6210AFDBA47A} = {C54F3B2C-FA76-4E04-910C-6210AFDBA47A}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildRight.AuthServer", "BuildRight.AuthServer\BuildRight.AuthServer.csproj", "{C54F3B2C-FA76-4E04-910C-6210AFDBA47A}"
 EndProject

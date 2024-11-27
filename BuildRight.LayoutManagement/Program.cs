@@ -1,4 +1,8 @@
 
+using AutoMapper;
+using BuildRight.LayoutManagement.Services;
+using System.Reflection;
+
 namespace BuildRight.LayoutManagement
 {
     public class Program
@@ -8,6 +12,11 @@ namespace BuildRight.LayoutManagement
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            builder.Services
+                .AddSingleton<LayoutProvider>()
+                .AddTransient<LayoutService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
