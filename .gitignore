@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /BuildRight.ContentManagement/appsettings.Development.json
 /BuildRight.ContentManagement/appsettings.json
 /BuildRight.AuthServer/appsettings.json
+/BuildRight.LayoutManagement/appsettings.json
