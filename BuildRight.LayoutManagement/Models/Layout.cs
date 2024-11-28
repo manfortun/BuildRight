@@ -6,4 +6,5 @@ public abstract class Layout
     public IEnumerable<Layout> Children { get; set; } = default!;
     public string? Page { get; set; } = string.Empty;
     public int? Order { get; set; } = default!;
+    public string? Type => this.GetType().Name;
 }

@@ -9,12 +9,12 @@ public class LayoutService
 {
     private readonly LayoutRepository _repository;
     private readonly JsonToLayoutService _jsonToLayoutService;
-    private readonly LayoutProvider _layoutProvider;
+    private readonly TypeProvider<Layout> _layoutProvider;
 
     public LayoutService(
         LayoutRepository repository,
         JsonToLayoutService jsonToLayoutService,
-        LayoutProvider layoutProvider)
+        TypeProvider<Layout> layoutProvider)
     {
         _repository = repository;
         _jsonToLayoutService = jsonToLayoutService;

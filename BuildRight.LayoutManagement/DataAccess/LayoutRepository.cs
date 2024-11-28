@@ -10,12 +10,13 @@ namespace BuildRight.LayoutManagement.DataAccess;
 public class LayoutRepository
 {
     private readonly IMongoCollection<BsonDocument> _layouts;
-    private readonly LayoutProvider _layoutProvider;
+    private readonly TypeProvider<Layout> _layoutProvider;
+    private const string COLLECTION_NAME = "Layouts";
 
-    public LayoutRepository(IMongoClient client, IOptions<MongoDbSettings> settings, LayoutProvider layoutProvider)
+    public LayoutRepository(IMongoClient client, IOptions<MongoDbSettings> settings, TypeProvider<Layout> layoutProvider)
     {
         var database = client.GetDatabase(settings.Value.DatabaseName);
-        _layouts = database.GetCollection<BsonDocument>("Layouts");
+        _layouts = database.GetCollection<BsonDocument>(COLLECTION_NAME);
         _layoutProvider = layoutProvider;
     }
 

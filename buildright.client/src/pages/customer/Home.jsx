@@ -8,34 +8,40 @@ import SectionTitle from "../../components/SectionTitle";
 import ServiceHighlightTitle from "../../components/ServiceHighlightTitle";
 import ServiceHighlightTitleWithLink from "../../components/ServiceHighlightTitleWithLink";
 import { fetchData, fetchOptions } from "../../services/apiService";
-import { BASE_URL_CONTENT } from "../../util/constants";
+import { BASE_URL_CONTENT, BASE_URL_LAYOUT } from "../../util/constants";
 import ImageWithLink from "../../components/ImageWithLink";
 import SlantedArrayDisplay from "../../components/SlantedArrayDisplay";
 import SlantedArrayDisplayItem from "../../components/SlantedArrayDisplayItem";
+import { ComponentMap } from "../../components/maps/componentMap";
 
 const Home = () => {
-    const [landingPage, setLandingPage] = useState({});
+    const [landingPage, setLandingPage] = useState();
 
     useEffect(() => {
         const getLandingPage = async () => {
             const options = fetchOptions();
-            const { status, response } = await fetchData(BASE_URL_CONTENT, 'Services/LandingPage', options);
+            const { status, response } = await fetchData(BASE_URL_LAYOUT, 'Layout/home', options);
 
             if (!status) {
                 console.error(response);
             }
 
-            setLandingPage(response);
+            console.log(response.layouts[0]);
+            setLandingPage(response.layouts[0]);
         }
 
         getLandingPage();
     }, []);
 
+    if (!landingPage) return <div>Please wait...</div>
+
+    const { type, ...props } = landingPage;
+    const ComponentToRender = ComponentMap[type] || null;
+
     return (
         <Page>
-
+            {ComponentToRender ? <ComponentToRender {...props} /> : <div>Component not found...</div> }
             <PictureHeroWithTitle src="hero.jpg" alt="This is the picture hero" textColor="white" />
-
 
             {landingPage.promotions && landingPage.promotions.length > 0 && (
                 <PromoBar image={landingPage.promotions[0].image} clickable={landingPage.promotions[0].isClickable} />

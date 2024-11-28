@@ -1,4 +1,5 @@
-﻿using BuildRight.LayoutManagement.RequestDTOs;
+﻿using BuildRight.LayoutManagement.Models;
+using BuildRight.LayoutManagement.RequestDTOs;
 using BuildRight.LayoutManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,7 @@ public class LayoutController : ControllerBase
     [HttpGet("{page}")]
     public async Task<IActionResult> PageLayout(string page)
     {
-        var layouts = await _layoutService.GetPage(page);
+        List<Layout> layouts = (await _layoutService.GetPage(page)).ToList();
 
         return Ok(new { layouts });
     }

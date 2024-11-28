@@ -7,9 +7,9 @@ namespace BuildRight.LayoutManagement.Services;
 
 public class JsonToLayoutService
 {
-    private readonly LayoutProvider _layoutProvider;
+    private readonly TypeProvider<Layout> _layoutProvider;
 
-    public JsonToLayoutService(LayoutProvider layoutProvider)
+    public JsonToLayoutService(TypeProvider<Layout> layoutProvider)
     {
         _layoutProvider = layoutProvider;
     }
