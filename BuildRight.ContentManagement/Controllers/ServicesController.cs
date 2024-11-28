@@ -1,5 +1,4 @@
 ﻿using BuildRight.ContentManagement.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildRight.ContentManagement.Controllers;

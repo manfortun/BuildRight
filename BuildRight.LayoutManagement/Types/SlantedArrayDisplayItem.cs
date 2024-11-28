@@ -1,7 +1,7 @@
-﻿using BuildRight.LayoutManagement.Types.Interfaces;
+﻿using BuildRight.LayoutManagement.Models;
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class SlantedArrayDisplayItem : ILayout
+public class SlantedArrayDisplayItem : Layout
 {
 }

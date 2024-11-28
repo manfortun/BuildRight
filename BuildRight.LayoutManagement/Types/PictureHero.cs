@@ -1,7 +1,7 @@
-﻿using BuildRight.LayoutManagement.Types.Interfaces;
+﻿namespace BuildRight.LayoutManagement.Types;
 
-namespace BuildRight.LayoutManagement.Types;
-
-public class PictureHero : ILayout
+public class PictureHero : Hero
 {
+    public decimal Height { get; set; } = 0.0M;
+    public string Src { get; set; } = string.Empty;
 }

@@ -1,6 +1,7 @@
-
-using AutoMapper;
+using BuildRight.LayoutManagement.DataAccess;
 using BuildRight.LayoutManagement.Services;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using System.Reflection;
 
 namespace BuildRight.LayoutManagement
@@ -14,9 +15,19 @@ namespace BuildRight.LayoutManagement
             // Add services to the container.
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+            builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+
+            builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+                return new MongoClient(settings.ConnectionString);
+            });
+
             builder.Services
                 .AddSingleton<LayoutProvider>()
-                .AddTransient<LayoutService>();
+                .AddTransient<LayoutService>()
+                .AddTransient<LayoutRepository>()
+                .AddTransient<JsonToLayoutService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

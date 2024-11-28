@@ -1,7 +1,6 @@
-﻿using BuildRight.LayoutManagement.Types.Interfaces;
+﻿namespace BuildRight.LayoutManagement.Types;
 
-namespace BuildRight.LayoutManagement.Types;
-
-public class PictureHeroWithTitle : ILayout
+public class PictureHeroWithTitle : PictureHero
 {
+    public string TextColor { get; set; } = string.Empty;
 }

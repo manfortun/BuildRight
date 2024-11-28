@@ -1,22 +1,27 @@
-﻿using AutoMapper;
+﻿using BuildRight.LayoutManagement.DataAccess;
 using BuildRight.LayoutManagement.Models;
 using BuildRight.LayoutManagement.RequestDTOs;
-using BuildRight.LayoutManagement.Types.Interfaces;
+using MongoDB.Bson;
 
 namespace BuildRight.LayoutManagement.Services;
 
 public class LayoutService
 {
+    private readonly LayoutRepository _repository;
+    private readonly JsonToLayoutService _jsonToLayoutService;
     private readonly LayoutProvider _layoutProvider;
-    private readonly IMapper _mapper;
 
-    public LayoutService(LayoutProvider layoutProvider, IMapper mapper)
+    public LayoutService(
+        LayoutRepository repository,
+        JsonToLayoutService jsonToLayoutService,
+        LayoutProvider layoutProvider)
     {
+        _repository = repository;
+        _jsonToLayoutService = jsonToLayoutService;
         _layoutProvider = layoutProvider;
-        _mapper = mapper;
     }
 
-    public IEnumerable<Layout> GetLayouts(LayoutRequest request)
+    public IEnumerable<Layout> GetLayouts(LayoutGetRequest request)
     {
         var layouts = _layoutProvider.Types;
 
@@ -32,13 +37,53 @@ public class LayoutService
 
         if (layouts.Any())
         {
-            var layoutTypes = layouts
-                .Select(l => Activator.CreateInstance(l) as ILayout)
-                .OfType<ILayout>();
-
-            return _mapper.Map<IEnumerable<Layout>>(layoutTypes);
+            return layouts
+                .Select(l => Activator.CreateInstance(l) as Layout)
+                .OfType<Layout>();
         }
 
         return [];
+    }
+
+    public async Task<IOrderedEnumerable<Layout>> GetPage(string pageName)
+    {
+        var sections = await _repository.GetPageSectionsAsync<Layout>(pageName);
+
+        return sections;
+    }
+
+    public void UpsertSection(LayoutAddRequest request)
+    {
+        List<Layout> layoutsList = _jsonToLayoutService.ToLayouts(request.Properties);
+
+        foreach (var layout in layoutsList)
+        {
+            BsonDocument bsonDoc = this.ToBsonDocument(layout);
+
+            _repository.AddItem(bsonDoc);
+        }
+    }
+
+    private BsonDocument ToBsonDocument(Layout item)
+    {
+        BsonDocument bsonDoc = item.ToBsonDocument();
+        bsonDoc["_type"] = item.GetType().AssemblyQualifiedName;
+
+        if (item.Children?.Count() > 0)
+        {
+            BsonArray bsonChildren = new BsonArray();
+            foreach (var child in item.Children)
+            {
+                BsonDocument bsonChild = this.ToBsonDocument(child);
+                bsonChildren.Add(bsonChild);
+            }
+
+            if (bsonDoc.Contains("Children"))
+            {
+                bsonDoc["Children"] = bsonChildren;
+            }
+        }
+
+        return bsonDoc;
     }
 }

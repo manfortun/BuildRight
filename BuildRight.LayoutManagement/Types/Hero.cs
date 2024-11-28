@@ -1,7 +1,8 @@
-﻿using BuildRight.LayoutManagement.Types.Interfaces;
+﻿using BuildRight.LayoutManagement.Models;
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class Hero : ILayout
+public class Hero : Layout
 {
+    public string Alt { get; set; } = string.Empty;
 }

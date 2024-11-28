@@ -15,11 +15,27 @@ public class LayoutController : ControllerBase
         _layoutService = layoutService;
     }
 
-    [HttpPost(nameof(Layouts))]
-    public IActionResult Layouts([FromBody] LayoutRequest request)
+    [HttpPost(nameof(Types))]
+    public IActionResult Layouts([FromBody] LayoutGetRequest request)
     {
         var layouts = _layoutService.GetLayouts(request);
 
         return layouts.Any() ? Ok(new { layouts }) : NoContent();
+    }
+
+    [HttpGet("{page}")]
+    public async Task<IActionResult> PageLayout(string page)
+    {
+        var layouts = await _layoutService.GetPage(page);
+
+        return Ok(new { layouts });
+    }
+
+    [HttpPost]
+    public IActionResult UpsertLayout(LayoutAddRequest request)
+    {
+        _layoutService.UpsertSection(request);
+
+        return Ok();
     }
 }

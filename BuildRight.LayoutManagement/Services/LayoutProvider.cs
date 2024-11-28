@@ -1,4 +1,4 @@
-﻿using BuildRight.LayoutManagement.Types.Interfaces;
+﻿using BuildRight.LayoutManagement.Models;
 using System.Reflection;
 
 namespace BuildRight.LayoutManagement.Services;
@@ -12,6 +12,6 @@ public class LayoutProvider
         Types = Assembly
             .GetExecutingAssembly()
             .GetTypes()
-            .Where(t => typeof(ILayout).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+            .Where(t => typeof(Layout).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
     }
 }
