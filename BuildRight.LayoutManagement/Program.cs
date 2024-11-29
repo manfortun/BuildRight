@@ -3,8 +3,8 @@ using BuildRight.LayoutManagement.Models;
 using BuildRight.LayoutManagement.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Diagnostics;
 using System.Reflection;
-using System.Text.Json.Serialization.Metadata;
 
 namespace BuildRight.LayoutManagement
 {
@@ -29,20 +29,29 @@ namespace BuildRight.LayoutManagement
                 .AddSingleton<TypeProvider<Layout>>()
                 .AddTransient<LayoutService>()
                 .AddTransient<LayoutRepository>()
-                .AddTransient<JsonToLayoutService>();
+                .AddTransient<JsonToLayoutService>()
+                .AddTransient<ResponseUtil>();
 
             builder.Services.AddCors(options =>
             {
+                string[] allowedOrigins = [.. builder.Configuration
+                    .GetSection("AllowedOrigins")
+                    .GetChildren()
+                    .Select(c => c.Value)];
+
                 options.AddPolicy("AllowSpecificOrigin",
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5173", "https://localhost:7146")
+                        builder.WithOrigins(allowedOrigins)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
                     });
             });
 
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

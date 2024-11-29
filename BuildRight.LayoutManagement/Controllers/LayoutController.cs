@@ -10,10 +10,12 @@ namespace BuildRight.LayoutManagement.Controllers;
 public class LayoutController : ControllerBase
 {
     private readonly LayoutService _layoutService;
+    private readonly ResponseUtil _responseUtil;
 
-    public LayoutController(LayoutService layoutService)
+    public LayoutController(LayoutService layoutService, ResponseUtil responseUtil)
     {
         _layoutService = layoutService;
+        _responseUtil = responseUtil;
     }
 
     [HttpPost(nameof(Types))]
@@ -27,9 +29,10 @@ public class LayoutController : ControllerBase
     [HttpGet("{page}")]
     public async Task<IActionResult> PageLayout(string page)
     {
-        List<Layout> layouts = (await _layoutService.GetPage(page)).ToList();
+        Layout[] layouts = [.. await _layoutService.GetPage(page)];
+        var test = _responseUtil.ToOutput(layouts);
 
-        return Ok(new { layouts });
+        return Ok(new { layouts = test });
     }
 
     [HttpPost]

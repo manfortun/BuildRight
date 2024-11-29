@@ -4,5 +4,5 @@ namespace BuildRight.LayoutManagement.Types;
 
 public class Hero : Layout
 {
-    public string Alt { get; set; } = string.Empty;
+    public string? Alt { get; set; } = default!;
 }

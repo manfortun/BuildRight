@@ -18,10 +18,15 @@ public class Program
 
         builder.Services.AddCors(options =>
         {
+            string[] allowedOrigins = [.. builder.Configuration
+                    .GetSection("AllowedOrigins")
+                    .GetChildren()
+                    .Select(c => c.Value)];
+
             options.AddPolicy("AllowSpecificOrigin",
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:5173", "https://localhost:7205")
+                    builder.WithOrigins(allowedOrigins)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

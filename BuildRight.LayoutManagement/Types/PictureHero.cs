@@ -2,6 +2,6 @@
 
 public class PictureHero : Hero
 {
-    public decimal Height { get; set; } = 0.0M;
-    public string Src { get; set; } = string.Empty;
+    public decimal? Height { get; set; } = default!;
+    public string? Src { get; set; } = default!;
 }

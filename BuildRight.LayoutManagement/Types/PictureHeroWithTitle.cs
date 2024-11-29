@@ -2,5 +2,5 @@
 
 public class PictureHeroWithTitle : PictureHero
 {
-    public string TextColor { get; set; } = string.Empty;
+    public string? TextColor { get; set; } = default!;
 }

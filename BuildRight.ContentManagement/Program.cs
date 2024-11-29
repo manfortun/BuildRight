@@ -56,10 +56,15 @@ namespace BuildRight.ContentManagement
 
             builder.Services.AddCors(options =>
             {
+                string[] allowedOrigins = [.. builder.Configuration
+                    .GetSection("AllowedOrigins")
+                    .GetChildren()
+                    .Select(c => c.Value)];
+
                 options.AddPolicy("AllowSpecificOrigin",
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5173", "https://localhost:7146")
+                        builder.WithOrigins(allowedOrigins)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

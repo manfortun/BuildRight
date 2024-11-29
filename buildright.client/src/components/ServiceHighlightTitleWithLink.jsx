@@ -1,6 +1,6 @@
 import BorderContainer from "./BorderContainer";
 
-const ServiceHighlightTitleWithLink = ({ label, description, href, height = "auto", backgroundSrc = "" }) => {
+const ServiceHighlightTitleWithLink = ({ label, description, href, height, backgroundSrc }) => {
 
     return (
         <BorderContainer clickable={true} backgroundSrc={backgroundSrc} height={height}>
