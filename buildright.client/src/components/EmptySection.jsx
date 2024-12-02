@@ -1,9 +1,19 @@
 import Section from "./Section"
 
 const EmptySection = () => {
+
+    const style = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
+        height: '50px'
+    }
+
     return (
         <Section>
-            <div className="d-flex flex-column align-items-center justify-content-center bg-warning w-100" style={{height: "50px"} }>
+            <div className="bg-warning" style={ style }>
                 <span className="text-danger fw-bold">This section has no children!</span>
             </div>
         </Section>

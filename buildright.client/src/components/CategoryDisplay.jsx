@@ -64,7 +64,7 @@ const CategoryDisplay = ({ items, onSelection }) => {
 
     return (
         <div>
-            {categories && categories.length > 0 && categories.map(cat => (
+            {categories?.length > 0 && categories.map(cat => (
                 <button className="btn fw-bold" style={{ color: `${cat.isActive ? 'black' : 'lightgray'}` }} onClick={(e) => handleCategoryClick(cat.id)} key={cat.id }>{cat.title}</button>
             )) }
         </div>

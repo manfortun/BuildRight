@@ -1,8 +1,17 @@
 import PropTypes from 'prop-types';
 
-const Hero = ({ children, alt }) => {
+const Hero = ({ children, height }) => {
+    const divProperties = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100vw",
+        height: height ? `${height}px` : '80px'
+    }
+
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center w-100">
+        <div style={divProperties }>
             { children }
         </div>
     )
@@ -10,7 +19,7 @@ const Hero = ({ children, alt }) => {
 
 Hero.propTypes = {
     children: PropTypes.any,
-    alt: PropTypes.string
+    height: PropTypes.number
 }
 
 export default Hero;

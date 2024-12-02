@@ -1,12 +1,25 @@
-const FooterSection = ({ children, title = "" }) => {
+import PropTypes from 'prop-types';
+
+const FooterSection = ({ children, title }) => {
+    const style = {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        alignItems: 'start'
+    }
     return (
-        <div className="d-flex flex-column justify-content-start align-items-start">
-            {title && title.length > 0 && (
+        <div style={style }>
+            {title?.length > 0 && (
                 <h4 className="fw-bold">{title}</h4>
             ) }
             {children }
         </div>
     )
+}
+
+FooterSection.propTypes = {
+    children: PropTypes.any,
+    title: PropTypes.string
 }
 
 export default FooterSection;

@@ -1,33 +1,53 @@
 import { memo, useState } from "react";
+import PropTypes from 'prop-types';
 
 function FloatingInput({
-    type = "text",
-    value = "",
+    type,
+    value,
     id,
     onChange,
-    required = false,
-    placeholder = ""
+    required,
+    placeholder
 }) {
     const [inputId] = useState(() => id || `id-${Date.now()}`);
+    const labelStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 'auto'
+    }
+    const spanStyle = {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 
     return (
         <div className="form-floating mb-3 w-100">
             <input
-                type={type}
+                type={type ?? 'text'}
                 className="form-control"
-                value={value === undefined || value === null ? "" : value}
+                value={value ?? ""}
                 id={inputId}
                 onChange={onChange}
-                required={required}
-                placeholder={placeholder}>
+                required={required ?? false}
+                placeholder={placeholder ?? ''}>
             </input>
-            <label
-                className="d-flex flex-row justify-content-center align-items-center m-auto"
-                htmlFor={inputId}>
-                <span className="d-flex flex-row align-items-center">{placeholder}</span>
+            <label style={labelStyle } htmlFor={inputId}>
+                <span style={spanStyle }>{placeholder}</span>
             </label>
         </div>
     )
+}
+
+FloatingInput.propTypes = {
+    type: PropTypes.string,
+    value: PropTypes.string,
+    id: PropTypes.string,
+    onChange: PropTypes.func,
+    required: PropTypes.bool,
+    placeholder: PropTypes.string
 }
 
 export default memo(FloatingInput);

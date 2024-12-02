@@ -1,7 +1,7 @@
 import PictureHero from "./PictureHero"
 import PropTypes from 'prop-types';
 
-const PictureHeroWithTitle = ({ src, textColor, height, alt }) => {
+const PictureHeroWithTitle = ({ src, textColor, height, title, alt }) => {
     return (
         <div style={{justifyContent: 'center', alignItems: 'center', height: '-webkit-fill-available', width: '-webkit-fill-available', display: 'flex', position: 'relative'} }>
             <PictureHero src={src} height={height} alt={alt} />
