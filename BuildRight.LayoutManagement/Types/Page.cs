@@ -2,6 +2,6 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class Page : Layout
+public class Page : LayoutWithChildren
 {
 }

@@ -1,7 +1,5 @@
-﻿using BuildRight.LayoutManagement.Models;
+﻿namespace BuildRight.LayoutManagement.Types;
 
-namespace BuildRight.LayoutManagement.Types;
-
-public class CategorizedItemArrayDisplay : Layout
+public class CategorizedItemArrayDisplay : CategoryDisplay
 {
 }

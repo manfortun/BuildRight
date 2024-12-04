@@ -21,24 +21,32 @@ public class LayoutController : ControllerBase
     [HttpPost(nameof(Types))]
     public IActionResult Layouts([FromBody] LayoutGetRequest request)
     {
-        var layouts = _layoutService.GetLayouts(request);
+        var layouts = _layoutService.GetLayoutList(request);
 
         return layouts.Any() ? Ok(new { layouts }) : NoContent();
     }
 
     [HttpGet("{page}")]
-    public async Task<IActionResult> PageLayout(string page)
+    public IActionResult PageLayout(string page)
     {
-        Layout[] layouts = [.. await _layoutService.GetPage(page)];
+        Layout[] layouts = [.. _layoutService.GetPage(page)];
         var test = _responseUtil.ToOutput(layouts);
 
         return Ok(new { layouts = test });
     }
 
-    [HttpPost]
-    public IActionResult UpsertLayout(LayoutAddRequest request)
+    [HttpGet("elements/{id}")]
+    public IActionResult ElementById(string id)
     {
-        _layoutService.UpsertSection(request);
+        Layout? layout = _layoutService.GetElement(id);
+
+        return layout is null ? NotFound() : Ok(new { layout = _responseUtil.ToOutput(layout).First() });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpsertLayout(LayoutAddRequest request)
+    {
+        await _layoutService.UpsertLayout(request);
 
         return Ok();
     }

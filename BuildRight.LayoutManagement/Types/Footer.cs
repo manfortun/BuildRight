@@ -2,6 +2,6 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class Footer : Layout
+public class Footer : LayoutWithChildren
 {
 }

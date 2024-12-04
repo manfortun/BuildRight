@@ -2,7 +2,7 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class Section : Layout
+public class Section : LayoutWithChildren
 {
     public string? BackgroundColor { get; set; } = default!;
 }

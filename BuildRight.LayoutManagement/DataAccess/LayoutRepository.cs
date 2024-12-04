@@ -1,8 +1,8 @@
-﻿using BuildRight.LayoutManagement.Models;
+﻿using AutoMapper;
+using BuildRight.LayoutManagement.Models;
 using BuildRight.LayoutManagement.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 namespace BuildRight.LayoutManagement.DataAccess;
@@ -11,31 +11,88 @@ public class LayoutRepository
 {
     private readonly IMongoCollection<BsonDocument> _layouts;
     private readonly TypeProvider<Layout> _layoutProvider;
+    private readonly IMapper _mapper;
     private const string COLLECTION_NAME = "Layouts";
 
-    public LayoutRepository(IMongoClient client, IOptions<MongoDbSettings> settings, TypeProvider<Layout> layoutProvider)
+    public LayoutRepository(IMongoClient client, IOptions<MongoDbSettings> settings, TypeProvider<Layout> layoutProvider, IMapper mapper)
     {
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _layouts = database.GetCollection<BsonDocument>(COLLECTION_NAME);
         _layoutProvider = layoutProvider;
+        _mapper = mapper;
     }
 
-    public async Task<List<TLayout>> GetItemsAsync<TLayout>(Func<Layout, bool>? predicate = null) where TLayout : Layout
+    /// <summary>
+    /// Obtain items based on the <paramref name="predicate"/>.
+    /// </summary>
+    /// <typeparam name="TLayout"></typeparam>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public List<Layout> GetItems(Func<Layout, bool>? predicate = null)
     {
         var documents = _layouts.Find(FilterDefinition<BsonDocument>.Empty).ToList();
-        var layouts = documents.Select(DeserializeLayout).Where(l => l != null).ToList();
+        var layouts = documents.Select(_mapper.Map<Layout>).Where(l => l != null).ToList();
 
         if (predicate is not null)
         {
             layouts = layouts.Where(predicate).ToList();
         }
 
-        return layouts.OfType<TLayout>().ToList();
+        return layouts.OfType<Layout>().ToList();
     }
 
-    public async Task<IOrderedEnumerable<TLayout>> GetPageSectionsAsync<TLayout>(string page) where TLayout : Layout
+    /// <summary>
+    /// Get element with <paramref name="id"/>.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Layout? GetElement(string id)
     {
-        var sections = await this.GetItemsAsync<TLayout>(item => item.Page == page);
+        var documents = _layouts.Find(FilterDefinition<BsonDocument>.Empty).ToList();
+
+        foreach (var doc in documents)
+        {
+            var result = FindNestedElement(doc, id);
+            if (result is not null) return _mapper.Map<Layout>(result);
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Obtain an element regardless of its position in the nest
+    /// </summary>
+    /// <param name="document"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    private BsonDocument? FindNestedElement(BsonDocument document, string id)
+    {
+        if (document.Contains("_id") && document["_id"].AsString == id)
+        {
+            return document;
+        }
+
+        if (document.Contains("Children") && document["Children"].IsBsonArray)
+        {
+            var children = document["Children"].AsBsonArray;
+            foreach (var child in children)
+            {
+                var found = FindNestedElement(child.AsBsonDocument, id);
+                if (found is not null) return found;
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Obtain layouts of a page
+    /// </summary>
+    /// <typeparam name="TLayout"></typeparam>
+    /// <param name="page"></param>
+    /// <returns></returns>
+    public IOrderedEnumerable<Layout> GetPageSections(string page)
+    {
+        var sections = this.GetItems(item => item.Page == page);
 
         var instances = new List<Layout>();
 
@@ -53,42 +110,75 @@ public class LayoutRepository
         return sections.Where(s => s.Order is not null).OrderBy(s => s.Order);
     }
 
-    public void AddItem(BsonDocument bsonDoc)
+    /// <summary>
+    /// Add an item to the database
+    /// </summary>
+    /// <param name="bsonDocument"></param>
+    public void AddItem(BsonDocument bsonDocument)
     {
-        _layouts.InsertOne(bsonDoc);
+        _layouts.InsertOne(bsonDocument);
     }
 
-    public static Layout? DeserializeLayout(BsonDocument bsonDoc)
+    public async Task UpdateElement(Layout request)
     {
-        if (bsonDoc.Contains("_type"))
+        var parentElement = GetParentElement(request.Id);
+        var layout = GetElement(request.Id);
+
+        if (parentElement is not null && layout is not null)
         {
-            string? typeName = bsonDoc["_type"].AsString;
-            Type? type = Type.GetType(typeName);
-            var children = new List<Layout>();
+            var updatedElement = UpdateElement(parentElement, request);
+            var update = updatedElement.ToBsonDocument();
 
-            if (type != null)
-            {
-                BsonArray bsonChildrenArray = new BsonArray();
-                if (bsonDoc.Contains("Children") && bsonDoc["Children"] is BsonArray bsonChildren)
-                {
-                    foreach (var bsonChild in bsonChildren)
-                    {
-                        var bsonChildDocument = DeserializeLayout(bsonChild.AsBsonDocument);
-                        children.Add(bsonChildDocument);
-                    }
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", updatedElement.Id);
 
-                    bsonDoc.Remove("Children");
-                }
+            await _layouts.ReplaceOneAsync(filter, update);
+        }
+    }
 
-                bsonDoc.Remove("_type");
-                Layout layout = (Layout)BsonSerializer.Deserialize(bsonDoc, type);
-
-                layout.Children = children;
-
-                return layout;
-            }
+    /// <summary>
+    /// Update an element
+    /// </summary>
+    /// <param name="parentElement"></param>
+    /// <param name="elementToInsert"></param>
+    /// <returns></returns>
+    public Layout UpdateElement(Layout parentElement, Layout elementToInsert)
+    {
+        if (parentElement.Id == elementToInsert.Id)
+        {
+            parentElement = elementToInsert;
+            return parentElement;
         }
 
-        return null; // Handle unknown types gracefully
+        if (parentElement is LayoutWithChildren layoutWithChildren)
+        {
+            var children = new List<Layout>();
+            foreach (var child in layoutWithChildren.Children)
+            {
+                children.Add(UpdateElement(child, elementToInsert));
+            }
+
+            layoutWithChildren.Children = children;
+        }
+
+        return parentElement;
+    }
+
+    /// <summary>
+    /// Get the topmost parent of the element with <paramref name="id"/>.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Layout? GetParentElement(string id)
+    {
+        var documents = _layouts.Find(FilterDefinition<BsonDocument>.Empty).ToList();
+
+        foreach (var doc in documents)
+        {
+            var result = FindNestedElement(doc, id);
+
+            if (result is not null) return _mapper.Map<Layout>(doc);
+        }
+
+        return null;
     }
 }

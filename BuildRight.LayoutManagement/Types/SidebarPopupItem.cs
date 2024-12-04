@@ -2,6 +2,9 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class SidebarPopupItem : Layout
+public class SidebarPopupItem : LayoutWithChildren
 {
+    public string? Title { get; set; } = default!;
+    public string? Description { get; set; } = default!;
+    public string? Href { get; set; } = default!;
 }

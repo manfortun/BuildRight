@@ -2,6 +2,6 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class SlantedArrayDisplay : Layout
+public class SlantedArrayDisplay : LayoutWithChildren
 {
 }

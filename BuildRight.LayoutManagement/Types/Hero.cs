@@ -2,7 +2,7 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class Hero : Layout
+public class Hero : LayoutWithChildren
 {
-    public string? Alt { get; set; } = default!;
+    public int? Height { get; set; } = default!;
 }

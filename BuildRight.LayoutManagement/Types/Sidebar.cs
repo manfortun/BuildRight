@@ -2,6 +2,7 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class Sidebar : Layout
+public class Sidebar : LayoutWithChildren
 {
+    public int? Height { get; set; } = default!;
 }

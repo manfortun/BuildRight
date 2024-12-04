@@ -2,6 +2,7 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class FooterSection : Layout
+public class FooterSection : LayoutWithChildren
 {
+    public string? Title { get; set; } = default!;
 }

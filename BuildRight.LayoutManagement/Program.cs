@@ -3,7 +3,6 @@ using BuildRight.LayoutManagement.Models;
 using BuildRight.LayoutManagement.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace BuildRight.LayoutManagement

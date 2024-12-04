@@ -21,7 +21,13 @@ public class LayoutService
         _layoutProvider = layoutProvider;
     }
 
-    public IEnumerable<Layout> GetLayouts(LayoutGetRequest request)
+    /// <summary>
+    /// Retrieve all the types of layouts (Example: Section, ArrayDisplay, etc.)
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public IEnumerable<Layout> GetLayoutList(LayoutGetRequest request)
     {
         var layouts = _layoutProvider.Types;
 
@@ -45,45 +51,53 @@ public class LayoutService
         return [];
     }
 
-    public async Task<IOrderedEnumerable<Layout>> GetPage(string pageName)
+    /// <summary>
+    /// Obtain the list of layouts of a page
+    /// </summary>
+    /// <param name="pageName"></param>
+    /// <returns></returns>
+    public IOrderedEnumerable<Layout> GetPage(string pageName)
     {
-        var sections = await _repository.GetPageSectionsAsync<Layout>(pageName);
+        var sections = _repository.GetPageSections(pageName);
 
         return sections;
     }
 
-    public void UpsertSection(LayoutAddRequest request)
+    /// <summary>
+    /// Obtain a layout element
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public Layout? GetElement(string id)
+    {
+        var element = _repository.GetElement(id);
+
+        return element;
+    }
+
+    /// <summary>
+    /// Update or insert a layout
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task UpsertLayout(LayoutAddRequest request)
     {
         List<Layout> layoutsList = _jsonToLayoutService.ToLayouts(request.Properties);
 
         foreach (var layout in layoutsList)
         {
-            BsonDocument bsonDoc = this.ToBsonDocument(layout);
+            var bsonDoc = layout.ToBsonDocument();
 
-            _repository.AddItem(bsonDoc);
-        }
-    }
+            string? id = bsonDoc["_id"]?.ToString();
 
-    private BsonDocument ToBsonDocument(Layout item)
-    {
-        BsonDocument bsonDoc = item.ToBsonDocument();
-        bsonDoc["_type"] = item.GetType().AssemblyQualifiedName;
-
-        if (item.Children?.Count() > 0)
-        {
-            BsonArray bsonChildren = new BsonArray();
-            foreach (var child in item.Children)
+            if (!string.IsNullOrEmpty(id) && this.GetElement(id) is not null)
             {
-                BsonDocument bsonChild = this.ToBsonDocument(child);
-                bsonChildren.Add(bsonChild);
+                await _repository.UpdateElement(layout);
             }
-
-            if (bsonDoc.Contains("Children"))
+            else
             {
-                bsonDoc["Children"] = bsonChildren;
+                _repository.AddItem(bsonDoc);
             }
         }
-
-        return bsonDoc;
     }
 }

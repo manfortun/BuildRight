@@ -4,4 +4,5 @@ namespace BuildRight.LayoutManagement.Types;
 
 public class ProductDisplay : Layout
 {
+    public object? Product { get; set; } = default!;
 }

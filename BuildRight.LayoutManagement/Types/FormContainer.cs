@@ -2,6 +2,7 @@
 
 namespace BuildRight.LayoutManagement.Types;
 
-public class FormContainer : Layout
+public class FormContainer : LayoutWithChildren
 {
+    public string? Title { get; set; } = default!;
 }
