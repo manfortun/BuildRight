@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const SideBarSubitem = ({ title, description, href }) => {
 
     return (
@@ -9,5 +11,11 @@ const SideBarSubitem = ({ title, description, href }) => {
         </a>
     )
 };
+
+SideBarSubitem.propTypes = {
+    title: PropTypes.string,
+    description: PropTypes.string,
+    href: PropTypes.string
+}
 
 export default SideBarSubitem;

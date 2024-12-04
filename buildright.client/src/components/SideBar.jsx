@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from "react";
 import './styles/sidebar.css';
 
@@ -20,7 +21,7 @@ const SideBar = ({ children, height }) => {
     }, []);
 
     return (
-        <div id="sidebar" className={`sidebar-base${isSidebarShown ? '' : ' disappear'}`} style={{ height: height }}>
+        <div id="sidebar" className={`sidebar-base${isSidebarShown ? '' : ' disappear'}`} style={{ height: height ?? 'auto' }}>
             {children && children.length > 0 && children.map((child, index) => (
                 <div className="p-2" key={index }>
                     {child}
@@ -29,5 +30,10 @@ const SideBar = ({ children, height }) => {
         </div>
     )
 };
+
+SideBar.propTypes = {
+    children: PropTypes.array,
+    height: PropTypes.number
+}
 
 export default SideBar;

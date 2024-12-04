@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from "react";
 import BorderContainer from "./BorderContainer";
 import './styles/sidebarpopupitem.css';
@@ -72,7 +73,7 @@ const SideBarPopupItem = ({ title, description, children, href }) => {
                 {title }
             </a>
             <div className={`popup popup-${title} ${isMenuShownStepOne || isMenuShownStepTwo ? 'show' : ''}`} style={{minWidth: '250px'} }>
-                <BorderContainer clickable={true}>
+                <BorderContainer hasPointerEvents={true}>
                     <div className="p-2" style={{pointerEvents: 'all!important'} }>
                         {description && description.length > 0 && (
                             <h6 style={descriptionStyle}>{description}</h6>
@@ -90,6 +91,13 @@ const SideBarPopupItem = ({ title, description, children, href }) => {
             </div>
         </div>
     )
+}
+
+SideBarPopupItem.propTypes = {
+    title: PropTypes.string,
+    description: PropTypes.string,
+    children: PropTypes.any,
+    href: PropTypes.string
 }
 
 export default SideBarPopupItem;

@@ -1,13 +1,27 @@
-import { useEffect } from "react";
+import PropTypes from 'prop-types';
 import EmptySection from "./EmptySection";
 
-const Section = ({ children, backgroundColor = "transparent"}) => {
+const Section = ({ children, backgroundColor}) => {
 
+    const style = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100vw',
+        backgroundColor: backgroundColor ?? 'transparent',
+        padding: '100px'
+    }
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center w-100" style={{backgroundColor: backgroundColor, padding: '100px'} }>
-            {children ? children : <EmptySection /> }
+        <div style={ style }>
+            {children?.length > 0 ? children : <EmptySection /> }
         </div>
     )
 };
+
+Section.propTypes = {
+    children: PropTypes.array,
+    backgroundColor: PropTypes.string
+}
 
 export default Section;

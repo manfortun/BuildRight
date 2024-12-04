@@ -1,9 +1,22 @@
+import PropTypes from 'prop-types';
+
 const SlantedArrayDisplay = ({ children }) => {
+    const style = {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        columnGap: '0'
+    }
     return (
-        <div className="d-flex flex-row justify-content-center align-items-center" style={{ columnGap: '0' }}>
+        <div style={ style }>
             {children }
         </div>
     )
+}
+
+SlantedArrayDisplay.propTypes = {
+    children: PropTypes.array
 }
 
 export default SlantedArrayDisplay;

@@ -1,14 +1,22 @@
+import PropTypes from 'prop-types';
 import BorderContainer from "./BorderContainer";
 
-const ServiceHighlightTitle = ({ label, description, height = "auto", backgroundSrc = "" }) => {
+const ServiceHighlightTitle = ({ label, description, height, backgroundSrc }) => {
     return (
-        <BorderContainer clickable={false} backgroundSrc={backgroundSrc} height={height }>
+        <BorderContainer hasPointerEvents={false} backgroundSrc={backgroundSrc} height={height ?? 'auto' }>
             <h4>{label}</h4>
-            {description && description.length > 0 && (
+            {description?.length > 0 && (
                 <i>{description}</i>
             )}
         </BorderContainer>
     )
 };
+
+ServiceHighlightTitle.propTypes = {
+    label: PropTypes.string,
+    description: PropTypes.string,
+    height: PropTypes.number,
+    backgroundSrc: PropTypes.string
+}
 
 export default ServiceHighlightTitle;

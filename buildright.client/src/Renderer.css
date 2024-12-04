@@ -1,0 +1,9 @@
+.section-area {
+    border: 1px dashed lightgray;
+    transition: all 0.2s ease;
+}
+
+.section-area:hover {
+    border: 1px solid red;
+}
+

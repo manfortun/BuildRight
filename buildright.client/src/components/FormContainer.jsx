@@ -1,4 +1,6 @@
-const FormContainer = ({ children, onSubmit, title = "" }) => {
+import PropTypes from 'prop-types';
+
+const FormContainer = ({ children, onSubmit, title }) => {
     const formStyle = {
         padding: '1rem 1.5rem',
         border: 'solid lightgray 1px',
@@ -11,12 +13,18 @@ const FormContainer = ({ children, onSubmit, title = "" }) => {
     }
     return (
         <form onSubmit={onSubmit} style={formStyle }>
-            {title.length > 0 && (
+            {title?.length > 0 && (
                 <h3 className="mb-4">{title}</h3>
             )}
             {children }
         </form>
     )
 };
+
+FormContainer.propTypes = {
+    children: PropTypes.array,
+    onSubmit: PropTypes.func,
+    title: PropTypes.string
+}
 
 export default FormContainer;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from "react";
 
 const CategoryDisplay = ({ items, onSelection }) => {
@@ -5,30 +6,13 @@ const CategoryDisplay = ({ items, onSelection }) => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        let _canRender = checkCanRender();
+        let _canRender = items?.length > 0 && items.every(i => i.hasOwnProperty('categories'));
+        setCanRender(_canRender);
 
         if (_canRender) {
             getCategories();
         }
     }, []);
-
-    const checkCanRender = () => {
-        let _canRender = false;
-        try {
-
-            if (items.some(item => !item.hasOwnProperty("categories"))) {
-                throw new Error("Some of the items do not have the correct properties to render this component.");
-            }
-
-            _canRender = true;
-        } catch (ex) {
-            console.error(ex);
-            _canRender = false;
-        }
-
-        setCanRender(_canRender);
-        return _canRender;
-    }
 
     const select = (id) => {
         if (onSelection) {
@@ -69,6 +53,11 @@ const CategoryDisplay = ({ items, onSelection }) => {
             )) }
         </div>
     );
+}
+
+CategoryDisplay.propTypes = {
+    items: PropTypes.array,
+    onSelection: PropTypes.func
 }
 
 export default CategoryDisplay;

@@ -20,7 +20,7 @@ function App() {
                         <Route path="*" element={<PageNotFound />} />
                     </Route>
                     <Route path="/admin" element={<Router isAdmin={true} />}>
-                        <Route index element={<AdminHome.default /> } />
+                        <Route index element={<AdminHome.default />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

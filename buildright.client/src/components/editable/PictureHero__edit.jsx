@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import Hero from "./Hero";
+import Hero__edit from "./Hero__edit";
 
-const PictureHero = ({ src, height, alt }) => {
+const PictureHero__edit = ({ src, height, alt }) => {
     const style = {
         backgroundImage: `url('/assets/${src}')`,
         width: '100vw',
@@ -11,16 +11,16 @@ const PictureHero = ({ src, height, alt }) => {
     }
 
     return (
-        <Hero height={height }>
-            <div style={ style } />
-        </Hero>
+        <Hero__edit height={height}>
+            <div style={style} />
+        </Hero__edit>
     )
 };
 
-PictureHero.propTypes = {
+PictureHero__edit.propTypes = {
     src: PropTypes.string,
     height: PropTypes.number,
     alt: PropTypes.string
 }
 
-export default PictureHero;
+export default PictureHero__edit;

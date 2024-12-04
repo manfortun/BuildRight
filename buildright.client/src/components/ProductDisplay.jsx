@@ -1,9 +1,15 @@
 import { formatCurrency } from "../services/currencyService";
+import PropTypes from 'prop-types';
 import Rating from "./Rating";
 
 const ProductDisplay = ({ product }) => {
+    const divStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
     return (
-        <div className="d-flex justify-content-center align-items-center">
+        <div style={ divStyle }>
             <div className="d-flex flex-column justify-content-center align-items-start mt-3">
                 <img height="200px" width="200px" className="mb-2" />
                 <h6>{product.title}</h6>
@@ -12,6 +18,10 @@ const ProductDisplay = ({ product }) => {
             </div>
         </div>
     )
+}
+
+ProductDisplay.propTypes = {
+    product: PropTypes.any
 }
 
 export default ProductDisplay;

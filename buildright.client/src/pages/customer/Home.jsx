@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { Render } from "../../Renderer";
 import Page from "../../components/Page";
 import PromoBar from "../../components/PromoBar";
-import { ComponentMap } from "../../components/maps/componentMap";
 import { getLayout } from "../../services/layoutService";
 
 const Home = () => {
@@ -17,22 +17,6 @@ const Home = () => {
     }, []);
 
     if (!landingPage) return <div>Please wait...</div>
-
-    const Render = (data) => {
-        let children = [];
-
-        if (data.children && data.children.length > 0) {
-            children = data.children.map(c => { return Render(c) });
-        }
-
-        const { type, ...props } = data;
-        const updatedProps = {
-            ...props,
-            children: children
-        };
-        const Component = ComponentMap[type] || null;
-        return Component ? <Component {...updatedProps} /> : <div>Component not found...</div>;
-    }
 
     return (
         <Page>

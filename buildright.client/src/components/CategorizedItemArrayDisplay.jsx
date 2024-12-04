@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from "react";
-import CategoryDisplay from "./CategoryDisplay";
 import ArrayDisplay from "./ArrayDisplay";
+import CategoryDisplay from "./CategoryDisplay";
 import ProductDisplay from "./ProductDisplay";
 
 const CategorizedItemArrayDisplay = ({ items }) => {
@@ -8,16 +9,7 @@ const CategorizedItemArrayDisplay = ({ items }) => {
     const [selectedNewArrivalCategory, setSelectedNewArrivalCategory] = useState();
 
     useEffect(() => {
-        try {
-
-            if (items.some(item => !item.hasOwnProperty("categories"))) {
-                throw new Error("Some of the items do not have the correct properties to render this component.");
-            }
-
-            setCanRender(true);
-        } catch {
-            setCanRender(false);
-        }
+        setCanRender(items?.length > 0 && items.every(i => i.hasOwnProperty('categories')));
     }, []);
 
     if (!canRender) {
@@ -33,12 +25,16 @@ const CategorizedItemArrayDisplay = ({ items }) => {
             <CategoryDisplay items={items} onSelection={handleOnCategorySelection} />
             <div className="mb-5"/>
             <ArrayDisplay noOfColumns={6 }>
-                {items && items.length > 0 && items.filter(i => i.categories.some(cat => cat.id === selectedNewArrivalCategory)).map(item => (
+                {items?.length > 0 && items.filter(i => i.categories.some(cat => cat.id === selectedNewArrivalCategory)).map(item => (
                     <ProductDisplay key={item.id} product={item } />
                 )) }
             </ArrayDisplay>
         </div>
     )
+}
+
+CategorizedItemArrayDisplay.propTypes = {
+    items: PropTypes.array
 }
 
 export default CategorizedItemArrayDisplay;

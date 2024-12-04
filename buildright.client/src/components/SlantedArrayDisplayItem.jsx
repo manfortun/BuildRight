@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 const SlantedArrayDisplayItem = ({ primaryText, secondaryText, src }) => {
     return (
         <div style={{ transform: 'skew(-10deg)', overflow: 'clip' }}>
@@ -6,6 +8,12 @@ const SlantedArrayDisplayItem = ({ primaryText, secondaryText, src }) => {
             </div>
         </div>
     )
+}
+
+SlantedArrayDisplayItem.propTypes = {
+    primaryText: PropTypes.string,
+    secondaryText: PropTypes.string,
+    src: PropTypes.string
 }
 
 export default SlantedArrayDisplayItem;

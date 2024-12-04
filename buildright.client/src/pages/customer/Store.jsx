@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import Page from "../../components/Page"
-import { fetchData, fetchOptions } from "../../services/apiService"
-import { BASE_URL_CONTENT } from "../../util/constants";
+import CategorizedItemArrayDisplay from "../../components/CategorizedItemArrayDisplay";
+import Page from "../../components/Page";
 import PromoBar from "../../components/PromoBar";
 import Section from "../../components/Section";
 import SectionTitle from "../../components/SectionTitle";
-import CategorizedItemArrayDisplay from "../../components/CategorizedItemArrayDisplay";
+import { fetchData, fetchOptions } from "../../services/apiService";
+import { BASE_URL_CONTENT } from "../../util/constants";
 
 const Store = () => {
     const [activePromos, setActivePromos] = useState([]);

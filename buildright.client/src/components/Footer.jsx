@@ -1,4 +1,5 @@
-import { BsFacebook, BsLinkedin, BsInstagram, BsYoutube } from 'react-icons/bs';
+import PropTypes from 'prop-types';
+import { BsFacebook, BsInstagram, BsLinkedin, BsYoutube } from 'react-icons/bs';
 
 const Footer = ({ children }) => {
     const footerStyle = {
@@ -32,6 +33,10 @@ const Footer = ({ children }) => {
             {children }
         </footer>
     )
+}
+
+Footer.propTypes = {
+    children: PropTypes.array
 }
 
 export default Footer;

@@ -30,13 +30,13 @@ const Layout = () => {
 
     return (
         <div style={{ width: '100%', overflowX: 'clip' }}>
-            <div>
+            <div style={{marginTop: '55px'} }>
                 <Outlet />
             </div>
-            <SideBar >
+            <SideBar height={55 }>
                 <SideBarPopupItem title="Store" description="Visit our store!" href="/store" />
                 <SideBarPopupItem title="Services" description="We are dedicated to providing exceptional services:" >
-                    {primaryServices.length > 0 && primaryServices.map(service => (
+                    {primaryServices?.length > 0 && primaryServices.map(service => (
                         <SideBarSubitem title={service.title} description={service.description} href={service.url} key={service.title} />
                     ))}
                 </SideBarPopupItem>
@@ -49,7 +49,7 @@ const Layout = () => {
             </SideBar>
             <Footer >
                 <FooterSection title="Services">
-                    {primaryServices.length > 0 && primaryServices.map(service => (
+                    {primaryServices?.length > 0 && primaryServices.map(service => (
                         <a key={service.title} href={service.url } className="text-white">{service.title}</a>
                     ))}
                 </FooterSection>

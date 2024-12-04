@@ -1,6 +1,7 @@
 import './styles/servicehighlight.css';
+import PropTypes from 'prop-types';
 
-const BorderContainer = ({ children, clickable = false, height, backgroundSrc }) => {
+const BorderContainer = ({ children, hasPointerEvents, height, backgroundSrc }) => {
     const style = {
         display: 'flex',
         justifyContent: 'center',
@@ -8,7 +9,7 @@ const BorderContainer = ({ children, clickable = false, height, backgroundSrc })
         flexDirection: 'column',
         border: '#ddd 1px solid',
         padding: '1rem',
-        pointerEvents: clickable ? 'default' : 'none',
+        pointerEvents: hasPointerEvents ? 'default' : 'none',
         backgroundColor: 'white',
         height: height ? `${height}px` : 'auto'
     }
@@ -21,5 +22,13 @@ const BorderContainer = ({ children, clickable = false, height, backgroundSrc })
         </div>
     )
 };
+
+BorderContainer.propTypes = {
+    children: PropTypes.any,
+    hasPointerEvents: PropTypes.bool,
+    height: PropTypes.number,
+    backgroundSrc: PropTypes.string
+
+}
 
 export default BorderContainer;

@@ -1,9 +1,22 @@
+import PropTypes from 'prop-types';
+
 const Page = ({ children }) => {
+    const style = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'start',
+        minHeight: '720px'
+    }
     return (
-        <div className="d-flex flex-column align-items-center justify-content-start" style={{ minHeight: '720px' }}>
+        <div style={ style }>
             { children }
         </div>
     )
 };
+
+Page.propTypes = {
+    children: PropTypes.array
+}
 
 export default Page;
