@@ -127,7 +127,7 @@ public class LayoutRepository
         if (parentElement is not null && layout is not null)
         {
             var updatedElement = UpdateElement(parentElement, request);
-            var update = updatedElement.ToBsonDocument();
+            var update = _mapper.Map<BsonDocument>(updatedElement);
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", updatedElement.Id);
 

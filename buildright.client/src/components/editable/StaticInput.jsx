@@ -5,7 +5,7 @@ const StaticInput = ({ id, label, value }) => {
         <div className="d-flex flex-row justify-content-start align-items-center gap-3">
             <label htmlFor={id} className="col-form-label">{label}</label>
             <div className='col-sm-10'>
-                <input type='text' readOnly='' className="form-control-plaintext" id={id} value={value} data-np-intersection-state="observed" />
+                <input type='text' readOnly='' className="form-control-plaintext" id={id} defaultValue={value} data-np-intersection-state="observed" />
             </div>
         </div>
     )

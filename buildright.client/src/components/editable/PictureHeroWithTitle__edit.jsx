@@ -1,43 +1,53 @@
 import PropTypes from 'prop-types';
-import { useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import FileInput from "./FileInput";
 import NumberInput from "./NumberInput";
 import StaticInput from "./StaticInput";
 import TextInput from "./TextInput";
+import Base__edit from './Base__edit';
 
-const PictureHeroWithTitle__edit = ({ src, textColor, height, title, alt, ...props }) => {
+const PictureHeroWithTitle__edit = forwardRef((props, ref ) => {
     const [newProperties, setNewProperties] = useState({
-        title: title,
-        textColor: textColor,
-        src: '',
-        height: height,
-        alt: alt
+        id: props.id,
+        layoutType: 'PictureHeroWithTitle',
+        title: props.title,
+        textColor: props.textColor,
+        src: props.src,
+        height: props.height,
+        alt: props.alt,
+        order: props.order,
+        page: props.page
     });
+    const [newBgSrc, setNewBgSrc] = useState('');
+    const [srcChanged, setSrcChanged] = useState(false);
 
-    const handlePropChange = (propName, value) => {
+    useImperativeHandle(ref, () => ({
+        getProperties: () => newProperties,
+    }));
+
+    function test() {
+        return {
+            getProperties: () => newProperties
+        };
+    }
+
+    const handlePropChangeString = (propName, value) => {
         setNewProperties(prev => ({ ...prev, [propName]: value }));
     }
 
-    return (
-        <form>
-            <fieldset>
-                <StaticInput id={`${props.id}-id`} label="ID" value={props.id } />
-                <TextInput id={`${props.id}-title`} label="Title" placeholder='Title' onChange={(e) => handlePropChange('title', e.target.value)} value={newProperties.title} />
-                <TextInput id={`${props.id}-textColor`} label="Text Color" placeholder='Text Color' onChange={(e) => handlePropChange('textColor', e.target.value)} value={newProperties.textColor} />
-                <FileInput id={`${props.id}-src`} label="Background image" placeholder='Background image' onChange={(e) => handlePropChange('src', e.target.value)} value={newProperties.src} />
-                <NumberInput id={`${props.id}-height`} label="Height" placeholder='Height' onChange={(e) => handlePropChange('height', e.target.value)} value={newProperties.height} />
-                <TextInput id={`${props.id}-alt`} label="Alt" placeholder='Alt' onChange={(e) => handlePropChange('alt', e.target.value)} value={newProperties.alt} />
-            </fieldset>
-        </form>
-    )
-}
+    const handlePropChangeInt = (propName, value) => {
+        setNewProperties(prev => ({ ...prev, [propName]: Number(value) }));
+    }
 
-PictureHeroWithTitle__edit.propTypes = {
-    src: PropTypes.string,
-    textColor: PropTypes.string,
-    title: PropTypes.string,
-    height: PropTypes.number,
-    alt: PropTypes.string
-};
+    return (
+        <Base__edit id={props.id }>
+            <TextInput id={`${props.id}-title`} label="Title" placeholder='Title' onChange={(e) => handlePropChangeString('title', e.target.value)} value={newProperties.title} />
+            <TextInput id={`${props.id}-textColor`} label="Text Color" placeholder='Text Color' onChange={(e) => handlePropChangeString('textColor', e.target.value)} value={newProperties.textColor} />
+            <FileInput id={`${props.id}-src`} label="Background image" placeholder='Background image' onChange={(e) => setNewBgSrc(e.target.value)} value={newBgSrc} initValue={newProperties.src} />
+            <NumberInput id={`${props.id}-height`} label="Height" placeholder='Height' onChange={(e) => handlePropChangeInt('height', e.target.value)} value={newProperties.height} />
+            <TextInput id={`${props.id}-alt`} label="Alt" placeholder='Alt' onChange={(e) => handlePropChangeString('alt', e.target.value)} value={newProperties.alt} />
+        </Base__edit>
+    )
+})
 
 export default PictureHeroWithTitle__edit;

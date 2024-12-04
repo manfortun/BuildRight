@@ -1,4 +1,5 @@
 ﻿using BuildRight.LayoutManagement.Models;
+using System.Dynamic;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -23,7 +24,7 @@ public class JsonToLayoutService
         {
             if (!property.CanWrite) continue;
 
-            JsonNode? propertyValue = node[property.Name];
+            JsonNode? propertyValue = node[char.ToLower(property.Name[0]) + property.Name.Substring(1)];
 
             if (propertyValue is null) continue;
 
@@ -70,7 +71,8 @@ public class JsonToLayoutService
         }
         else
         {
-            if (node?["LayoutType"]?.ToString() is string page)
+
+            if (node?["layoutType"]?.ToString() is string page)
             {
                 Type? type = _layoutProvider.Types.FirstOrDefault(t => t.Name == page);
 

@@ -29,9 +29,9 @@ public class LayoutToBsonDocumentConverter : ITypeConverter<Layout, BsonDocument
     public BsonDocument Convert(Layout source, BsonDocument destination, ResolutionContext context)
     {
         var bsonDoc = source.ToBsonDocument();
-        bsonDoc["_type"] = this.GetType().AssemblyQualifiedName;
+        bsonDoc["_type"] = source.GetType().AssemblyQualifiedName;
 
-        if (source is LayoutWithChildren layoutWithChildren)
+        if (source is LayoutWithChildren layoutWithChildren && layoutWithChildren.Children is not null)
         {
             BsonArray bsonChildren = new BsonArray();
 

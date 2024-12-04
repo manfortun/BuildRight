@@ -1,7 +1,8 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LuPencil, LuSave, LuTrash } from 'react-icons/lu';
 import { ComponentMap, EditableComponentMap } from "./components/maps/componentMap";
 import './Renderer.css';
+import { updateElement } from "./services/layoutService";
 
 export const Render = (component) => {
     const { type, ...props } = component;
@@ -37,11 +38,18 @@ export const AdminRender = (component) => {
     return <AdminRenderer editor={type} {...finalizedProps } />;
 }
 
+
 const AdminRenderer = ({ editor, ...props }) => {
     const [onEditMode, setOnEditMode] = useState(false);
+    const componentRef = React.useRef();
 
-    const handleEdit = () => {
-        navigate(`/admin/editor/${id}`);
+    const test = async () => {
+        if (componentRef) {
+            var properties = componentRef.current.getProperties();
+            await updateElement(properties);
+
+            window.location.reload();
+        }
     }
 
     let Component;
@@ -53,9 +61,9 @@ const AdminRenderer = ({ editor, ...props }) => {
 
     return onEditMode ?
         <div className='position-relative w-100 m-3 p-3'>
-            <Component {...props} />
+            <Component {...props} ref={componentRef} />
             <div className="d-flex flex-row justify-content-end align-items-end m-2" style={{ gap: '10px' }}>
-                <button className="btn bg-white" onClick={() => setOnEditMode(false)}><LuSave /></button>
+                <button className="btn bg-white" onClick={() => test()}><LuSave /></button>
             </div>
         </div> :
         <div className='position-relative w-100 section-area d-inline-grid'>

@@ -1,4 +1,5 @@
-﻿using BuildRight.LayoutManagement.DataAccess;
+﻿using AutoMapper;
+using BuildRight.LayoutManagement.DataAccess;
 using BuildRight.LayoutManagement.Models;
 using BuildRight.LayoutManagement.RequestDTOs;
 using MongoDB.Bson;
@@ -10,15 +11,18 @@ public class LayoutService
     private readonly LayoutRepository _repository;
     private readonly JsonToLayoutService _jsonToLayoutService;
     private readonly TypeProvider<Layout> _layoutProvider;
+    private readonly IMapper _mapper;
 
     public LayoutService(
         LayoutRepository repository,
         JsonToLayoutService jsonToLayoutService,
-        TypeProvider<Layout> layoutProvider)
+        TypeProvider<Layout> layoutProvider,
+        IMapper mapper)
     {
         _repository = repository;
         _jsonToLayoutService = jsonToLayoutService;
         _layoutProvider = layoutProvider;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -86,7 +90,7 @@ public class LayoutService
 
         foreach (var layout in layoutsList)
         {
-            var bsonDoc = layout.ToBsonDocument();
+            var bsonDoc = _mapper.Map<BsonDocument>(layout);
 
             string? id = bsonDoc["_id"]?.ToString();
 
