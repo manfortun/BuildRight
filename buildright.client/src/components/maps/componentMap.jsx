@@ -29,6 +29,8 @@ import PictureHeroWithTitle__edit from '../editable/PictureHeroWithTitle__edit';
 import PictureHero__edit from '../editable/PictureHero__edit';
 import Section__edit from '../editable/Section__edit';
 import SectionTitle__edit from '../editable/SectionTitle__edit';
+import ArrayDisplay__edit from '../editable/ArrayDisplay__edit';
+import ServiceHighlightTitle__edit from '../editable/ServiceHighlightTitle__edit';
 
 export const ComponentMap = {
     ArrayDisplay,
@@ -63,6 +65,8 @@ export const EditableComponentMap = {
     Hero__edit,
     PictureHero__edit,
     PictureHeroWithTitle__edit,
+    ServiceHighlightTitle__edit,
     Section__edit,
-    SectionTitle__edit
+    SectionTitle__edit,
+    ArrayDisplay__edit,
 }

@@ -5,17 +5,7 @@ import NumberInput from "./NumberInput";
 import TextInput from "./TextInput";
 
 const PictureHeroWithTitle__edit = forwardRef((props, ref ) => {
-    const [newProperties, setNewProperties] = useState({
-        id: props.id,
-        type: props.type,
-        title: props.title,
-        textColor: props.textColor,
-        src: props.src,
-        height: props.height,
-        alt: props.alt,
-        order: props.order,
-        page: props.page
-    });
+    const [newProperties, setNewProperties] = useState({...props});
     const [newBgSrc, setNewBgSrc] = useState('');
     const [srcChanged, setSrcChanged] = useState(false);
 
@@ -32,12 +22,12 @@ const PictureHeroWithTitle__edit = forwardRef((props, ref ) => {
     }
 
     return (
-        <Base__edit id={props.id }>
+        <Base__edit id={props.id} type={props.type }>
             <TextInput id={`${props.id}-title`} label="Title" placeholder='Title' onChange={(e) => handlePropChangeString('title', e.target.value)} value={newProperties.title} />
             <TextInput id={`${props.id}-textColor`} label="Text Color" placeholder='Text Color' onChange={(e) => handlePropChangeString('textColor', e.target.value)} value={newProperties.textColor} />
-            <FileInput id={`${props.id}-src`} label="Background image" placeholder='Background image' onChange={(e) => setNewBgSrc(e.target.value)} value={newBgSrc} initValue={newProperties.src} />
             <NumberInput id={`${props.id}-height`} label="Height" placeholder='Height' onChange={(e) => handlePropChangeInt('height', e.target.value)} value={newProperties.height} />
             <TextInput id={`${props.id}-alt`} label="Alt" placeholder='Alt' onChange={(e) => handlePropChangeString('alt', e.target.value)} value={newProperties.alt} />
+            <FileInput id={`${props.id}-src`} label="Background image" placeholder='Background image' onChange={(e) => setNewBgSrc(e.target.value)} value={newBgSrc} initValue={newProperties.src} />
         </Base__edit>
     )
 })

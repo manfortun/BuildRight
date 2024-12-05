@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
-import { updateElement } from "./services/layoutService";
-import { ComponentMap, EditableComponentMap } from "./components/maps/componentMap";
 import { LuPencil, LuSave, LuTrash } from 'react-icons/lu';
-import './Renderer.css';
+import { ComponentMap, EditableComponentMap } from "./components/maps/componentMap";
+import { updateElement } from "./services/layoutService";
 
 const AdminRenderer = ({ showEditBtns = true, ...props }) => {
     let finalizedProps = { ...props };
@@ -46,7 +45,7 @@ const AdminRender = ({ showEditBtns, ...props }) => {
                 <button className="btn bg-white" onClick={() => save()}><LuSave /></button>
             </div>
         </div> :
-        <div className='position-relative w-100 section-area d-inline-grid'>
+        <div className='position-relative w-100 d-inline-grid'>
             <Component {...props} />
             {showEditBtns && (
                 <div className="d-flex flex-row justify-content-end align-items-end m-2" style={{ gap: '10px' }}>

@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AdminRenderer from "../../AdminRenderer";
 import Page from "../../components/Page";
 import PromoBar from "../../components/PromoBar";
 import { getLayout } from "../../services/layoutService";
+import OffCanvas from "../../components/editable/OffCanvas";
 
 const Home = () => {
     const [page, setPage] = useState([]);
+    const offCanvasRef = useRef();
 
     useEffect(() => {
         const init = async () => {
@@ -20,6 +22,9 @@ const Home = () => {
 
     return (
         <Page>
+            <OffCanvas isOpen={true }>
+
+            </OffCanvas>
             {page && page.length > 0 && page.map(props => <AdminRenderer {...props} />) }
 
             {page.promotions && page.promotions.length > 0 && (

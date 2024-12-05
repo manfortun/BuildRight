@@ -4,39 +4,29 @@ import TextInput from "./TextInput";
 import AdminRenderer from "../../AdminRenderer";
 import { EditableComponentMap } from "../maps/componentMap";
 import * as React from "react";
+import Accordion from "./Accordion";
 
 const Section__edit = forwardRef((props, ref) => {
-    const [newProperties, setNewProperties] = useState({
-        id: props.id,
-        type: 'Section',
-        backgroundColor: props.backgroundColor,
-        children: props.children,
-        order: props.order,
-        page: props.page
-    });
-    const nextRefs = useRef([]);
+    const childReferences = useRef([]);
+    const [newProperties, setNewProperties] = useState({...props});
 
-    if (nextRefs.current.length !== newProperties.children?.length) {
-        nextRefs.current = Array(newProperties.children?.length)
+    if (childReferences.current.length !== props.children?.length) {
+        childReferences.current = Array(props.children.length)
             .fill()
-            .map((_, i) => nextRefs.current[i] || React.createRef());
+            .map((_, i) => childReferences.current[i] || React.createRef());
     }
 
     useImperativeHandle(ref, () => ({
         getProperties: () => ({
             ...newProperties,
-            children: nextRefs.current.map((nextRef) => nextRef.current?.getProperties()),
+            children: childReferences.current.map((childRef) => childRef.current?.getProperties()),
         })
     }));
 
     function deserializeChildren(properties) {
         const y = [];
         for (const element of properties) {
-            if (element.props) {
-                y.push(element.props);
-            } else {
-                y.push(element);
-            }
+            y.push(element.props ?? element);
         }
 
         return y;
@@ -46,20 +36,17 @@ const Section__edit = forwardRef((props, ref) => {
         setNewProperties(prev => ({ ...prev, [propName]: value }));
     }
 
-    const handlePropChangeInt = (propName, value) => {
-        setNewProperties(prev => ({ ...prev, [propName]: Number(value) }));
-    }
-
     return (
-        <Base__edit id={props.id}>
+        <Base__edit id={props.id} type={props.type }>
             <TextInput id={`${props.id}-backgroundColor`} label="Background Color" placeholder='Background Color' onChange={(e) => handlePropChangeString('backgroundColor', e.target.value)} value={newProperties.backgroundColor} />
-            {nextRefs.current.map((nextRef, index) => {
-                const child = deserializeChildren(newProperties.children)[index];
-                const Component = EditableComponentMap[`${child.type}__edit`];
+            <Accordion>
+                {childReferences.current.map((nextRef, index) => {
+                    const child = deserializeChildren(newProperties.children)[index];
+                    const Component = EditableComponentMap[`${child.type}__edit`];
 
-                console.log('Child Component:', Component);
-                return Component ? <Component ref={nextRef} {...child} /> : <div>Test</div>;
-            }) }
+                    return Component ? <Component ref={nextRef} {...child} /> : <div>Test</div>;
+                }) }
+            </Accordion>
         </Base__edit>
     )
 });

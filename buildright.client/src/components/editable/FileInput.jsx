@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 const FileInput = ({ id, label, placeholder, value, initValue, onChange }) => {
+    return <small className="text-secondary d-flex my-3">File input has not been implemented yet.</small>
     const [currSrc, setCurrSrc] = useState(initValue);
 
     const removeCurrentSrc = (e) => {
