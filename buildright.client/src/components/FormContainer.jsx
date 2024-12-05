@@ -22,7 +22,7 @@ const FormContainer = ({ children, onSubmit, title }) => {
 };
 
 FormContainer.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.any,
     onSubmit: PropTypes.func,
     title: PropTypes.string
 }

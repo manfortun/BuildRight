@@ -27,6 +27,8 @@ import SlantedArrayDisplayItem from '../SlantedArrayDisplayItem';
 import Hero__edit from '../editable/Hero__edit';
 import PictureHeroWithTitle__edit from '../editable/PictureHeroWithTitle__edit';
 import PictureHero__edit from '../editable/PictureHero__edit';
+import Section__edit from '../editable/Section__edit';
+import SectionTitle__edit from '../editable/SectionTitle__edit';
 
 export const ComponentMap = {
     ArrayDisplay,
@@ -60,5 +62,7 @@ export const ComponentMap = {
 export const EditableComponentMap = {
     Hero__edit,
     PictureHero__edit,
-    PictureHeroWithTitle__edit
+    PictureHeroWithTitle__edit,
+    Section__edit,
+    SectionTitle__edit
 }

@@ -1,15 +1,13 @@
-import PropTypes from 'prop-types';
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
+import Base__edit from './Base__edit';
 import FileInput from "./FileInput";
 import NumberInput from "./NumberInput";
-import StaticInput from "./StaticInput";
 import TextInput from "./TextInput";
-import Base__edit from './Base__edit';
 
 const PictureHeroWithTitle__edit = forwardRef((props, ref ) => {
     const [newProperties, setNewProperties] = useState({
         id: props.id,
-        layoutType: 'PictureHeroWithTitle',
+        type: props.type,
         title: props.title,
         textColor: props.textColor,
         src: props.src,
@@ -24,12 +22,6 @@ const PictureHeroWithTitle__edit = forwardRef((props, ref ) => {
     useImperativeHandle(ref, () => ({
         getProperties: () => newProperties,
     }));
-
-    function test() {
-        return {
-            getProperties: () => newProperties
-        };
-    }
 
     const handlePropChangeString = (propName, value) => {
         setNewProperties(prev => ({ ...prev, [propName]: value }));

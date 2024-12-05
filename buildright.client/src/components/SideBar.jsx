@@ -32,7 +32,7 @@ const SideBar = ({ children, height }) => {
 };
 
 SideBar.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.any,
     height: PropTypes.number
 }
 

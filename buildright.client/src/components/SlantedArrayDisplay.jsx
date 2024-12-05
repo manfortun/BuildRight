@@ -16,7 +16,7 @@ const SlantedArrayDisplay = ({ children }) => {
 }
 
 SlantedArrayDisplay.propTypes = {
-    children: PropTypes.array
+    children: PropTypes.any
 }
 
 export default SlantedArrayDisplay;

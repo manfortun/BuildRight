@@ -16,7 +16,7 @@ const Page = ({ children }) => {
 };
 
 Page.propTypes = {
-    children: PropTypes.array
+    children: PropTypes.any
 }
 
 export default Page;

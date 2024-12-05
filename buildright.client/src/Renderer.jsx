@@ -1,76 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { LuPencil, LuSave, LuTrash } from 'react-icons/lu';
-import { ComponentMap, EditableComponentMap } from "./components/maps/componentMap";
-import './Renderer.css';
-import { updateElement } from "./services/layoutService";
+//import React, { useState } from "react";
+//import { LuPencil, LuSave, LuTrash } from 'react-icons/lu';
+//import './Renderer.css';
+//import { ComponentMap, EditableComponentMap } from "./components/maps/componentMap";
+//import { updateElement } from "./services/layoutService";
 
-export const Render = (component) => {
-    const { type, ...props } = component;
-    let finalizedProps = { ...props };
+//export const AdminRender = (showEditBtns = true, ...props) => {
+//    const { type, ...props } = component;
+//    let finalizedProps = { ...props };
 
-    if (component.children?.length > 0) {
-        let children = component.children.map(c => { return Render(c) });
-        finalizedProps = {
-            ...props,
-            children: children
-        }
-    }
+//    if (props.children?.length > 0) {
+//        finalizedProps.children = props.children.map(c => AdminRender(c, false));
+//    }
 
-    const Component = ComponentMap[type] || null;
-    return Component ? <Component {...finalizedProps} key={component.id} /> : <div>Component not found...</div>;
-}
-
-export const AdminRender = (component) => {
-    const { type, ...props } = component;
-    let finalizedProps = { ...props };
-
-    if (component.children?.length > 0) {
-        let children = component.children.map(c => { return AdminRender(c) });
-        finalizedProps = {
-            ...props,
-            children: children
-        }
-    }
-
-    const Component = ComponentMap[type] || null;
-
-    if (!Component) return <div>Component not found...</div>;
-    return <AdminRenderer editor={type} {...finalizedProps } />;
-}
+//    return (
+//        <AdminRenderer
+//            showEditBtns={showEditBtns}
+//            editor={type}
+//            {...finalizedProps}
+//        />
+//    );
+//};
 
 
-const AdminRenderer = ({ editor, ...props }) => {
-    const [onEditMode, setOnEditMode] = useState(false);
-    const componentRef = React.useRef();
+//const AdminRenderer = ({ showEditBtns, editor, ...props }) => {
+//    const [onEditMode, setOnEditMode] = useState(false);
+//    const componentRef = React.useRef(null);
 
-    const test = async () => {
-        if (componentRef) {
-            var properties = componentRef.current.getProperties();
-            await updateElement(properties);
+//    const save = async () => {
+//        if (componentRef.current) {
+//            const properties = componentRef.current.getProperties();
 
-            window.location.reload();
-        }
-    }
+//            await updateElement(properties);
+//            setOnEditMode(false);
+//        }
+//    }
 
-    let Component;
-    if (onEditMode) {
-        Component = EditableComponentMap[`${editor}__edit`] || null;
-    } else {
-        Component = ComponentMap[editor] || null;
-    }
+//    const Component = onEditMode
+//        ? EditableComponentMap[`${editor}__edit`]
+//        : ComponentMap[editor];
 
-    return onEditMode ?
-        <div className='position-relative w-100 m-3 p-3'>
-            <Component {...props} ref={componentRef} />
-            <div className="d-flex flex-row justify-content-end align-items-end m-2" style={{ gap: '10px' }}>
-                <button className="btn bg-white" onClick={() => test()}><LuSave /></button>
-            </div>
-        </div> :
-        <div className='position-relative w-100 section-area d-inline-grid'>
-            <Component {...props} />
-            <div className="d-flex flex-row justify-content-end align-items-end m-2" style={{ gap: '10px' }}>
-                <button className="btn bg-white" onClick={() => setOnEditMode(true)}><LuPencil /></button>
-                <button className="btn bg-white"><LuTrash /></button>
-            </div>
-        </div>;
-}
+//    if (!Component) {
+//        return <div>Component not found...</div>;
+//    }
+
+//    return onEditMode ?
+//        <div className='position-relative w-100 m-3 p-3'>
+//            <Component {...props} ref={componentRef} />
+//            <div className="d-flex flex-row justify-content-end align-items-end m-2" style={{ gap: '10px' }}>
+//                <button className="btn bg-white" onClick={() => save()}><LuSave /></button>
+//            </div>
+//        </div> :
+//        <div className='position-relative w-100 section-area d-inline-grid'>
+//            <Component {...props} />
+//            {showEditBtns && (
+//                <div className="d-flex flex-row justify-content-end align-items-end m-2" style={{ gap: '10px' }}>
+//                    <button className="btn bg-white" onClick={() => setOnEditMode(true)} title={editor }><LuPencil /></button>
+//                    <button className="btn bg-white"><LuTrash /></button>
+//                </div>
+//            ) }
+//        </div>;
+//}

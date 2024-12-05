@@ -39,7 +39,7 @@ public class JsonToLayoutService
                     Type t when t == typeof(double) => propertyValue.GetValue<double>(),
                     Type t when t == typeof(bool) => propertyValue.GetValue<bool>(),
                     Type t when t == typeof(string) => propertyValue.ToString(),
-                    Type t when t == typeof(IEnumerable<Layout>) => ToLayouts(propertyValue),
+                    Type t when t == typeof(IEnumerable<Layout>) => ToLayouts([.. propertyValue.AsArray()]),
                     Type t when t.IsEnum => Enum.Parse(propertyType, propertyValue.ToString() ?? ""),
                     _ => JsonSerializer.Deserialize(propertyValue.ToJsonString(), propertyType)
                 };
@@ -55,33 +55,36 @@ public class JsonToLayoutService
         return instance;
     }
 
-    public List<Layout> ToLayouts(dynamic request)
+    public List<Layout> ToLayouts(params dynamic[] requests)
     {
         var layoutList = new List<Layout>();
-
-        string jsonString = request is string ? request : JsonSerializer.Serialize(request);
-        JsonNode? node = JsonNode.Parse(jsonString);
-
-        if (node is JsonArray jsonArray)
-        {
-            foreach (JsonNode? item in jsonArray)
-            {
-                layoutList.AddRange(ToLayouts(item));
-            }
-        }
-        else
+        foreach (var request in requests)
         {
 
-            if (node?["layoutType"]?.ToString() is string page)
-            {
-                Type? type = _layoutProvider.Types.FirstOrDefault(t => t.Name == page);
+            string jsonString = request is string ? request : JsonSerializer.Serialize(request);
+            JsonNode? node = JsonNode.Parse(jsonString);
 
-                if (type is not null)
+            if (node is JsonArray jsonArray)
+            {
+                foreach (JsonNode? item in jsonArray)
                 {
-                    Layout? instance = CreateInstance(type, node);
-                    if (instance is not null)
+                    layoutList.AddRange(ToLayouts(item));
+                }
+            }
+            else
+            {
+
+                if (node?["type"]?.ToString() is string page)
+                {
+                    Type? type = _layoutProvider.Types.FirstOrDefault(t => t.Name == page);
+
+                    if (type is not null)
                     {
-                        layoutList.Add(instance);
+                        Layout? instance = CreateInstance(type, node);
+                        if (instance is not null)
+                        {
+                            layoutList.Add(instance);
+                        }
                     }
                 }
             }

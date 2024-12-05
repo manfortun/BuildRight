@@ -1,30 +1,29 @@
 import { useEffect, useState } from "react";
-import { Render } from "../../Renderer";
+import CustomerRenderer from "../../CustomerRenderer";
 import Page from "../../components/Page";
-import PromoBar from "../../components/PromoBar";
 import { getLayout } from "../../services/layoutService";
 
 const Home = () => {
-    const [landingPage, setLandingPage] = useState([]);
+    const [page, setPage] = useState([]);
 
     useEffect(() => {
         const init = async () => {
             const layout = await getLayout('home');
-            if (layout) setLandingPage(layout);
+            if (layout) setPage(layout);
         };
-
+        
         init();
     }, []);
 
-    if (!landingPage) return <div>Please wait...</div>
+    if (!page) return <div>Please wait...</div>
 
     return (
         <Page>
-            {landingPage && landingPage.length > 0 && landingPage.map(page => Render(page))}
+            {page && page.length > 0 && page.map(props => <CustomerRenderer {...props} key={props.id} />)}
 
-            {landingPage.promotions && landingPage.promotions.length > 0 && (
-                <PromoBar image={landingPage.promotions[0].image} clickable={landingPage.promotions[0].isClickable} />
-            )}
+            {/*{page.promotions && page.promotions.length > 0 && (*/}
+            {/*    <PromoBar image={page.promotions[0].image} clickable={page.promotions[0].isClickable} />*/}
+            {/*)}*/}
         </Page>
     )
 };

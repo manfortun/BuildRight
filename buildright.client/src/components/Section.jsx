@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import EmptySection from "./EmptySection";
+import { useEffect } from 'react';
 
-const Section = ({ children, backgroundColor}) => {
+const Section = ({ children, backgroundColor }) => {
 
     const style = {
         display: 'flex',
@@ -12,15 +13,20 @@ const Section = ({ children, backgroundColor}) => {
         backgroundColor: backgroundColor ?? 'transparent',
         padding: '100px'
     }
-    return (
-        <div style={ style }>
-            {children?.length > 0 ? children : <EmptySection /> }
-        </div>
-    )
+
+    if (!children || children.length < 1) {
+        return <EmptySection />;
+    } else {
+        return (
+            <div style={style}>
+                {children}
+            </div>
+        )
+    }
 };
 
 Section.propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.any,
     backgroundColor: PropTypes.string
 }
 
