@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using BuildRight.LayoutManagement.Attributes;
+using BuildRight.LayoutManagement.Models;
+using System.Reflection;
 
 namespace BuildRight.LayoutManagement.Services;
 
@@ -34,6 +36,34 @@ public class ResponseUtil
         }
 
         return [.. objectList];
+    }
+
+    public Dictionary<string, Dictionary<string, object>> AsPropertyList(params Layout[] items)
+    {
+        var metadata = new Dictionary<string, Dictionary<string, object>>();
+        foreach (var item in items)
+        {
+            if (metadata.ContainsKey(item.Type)) continue;
+            metadata.Add(item.Type, new Dictionary<string, object>());
+            PropertyInfo[] properties = item.GetType().GetProperties();
+
+            foreach (var prop in properties)
+            {
+                var attribute = prop.GetCustomAttribute<DisplayMetadataAttribute>();
+                if (attribute is not null)
+                {
+                    metadata[item.Type][toCamelCase(prop.Name)] = new Dictionary<string, object>
+                    {
+                        { nameof(attribute.DisplayName), attribute.DisplayName },
+                        { nameof(attribute.Placeholder), attribute.Placeholder },
+                        { nameof(attribute.InputType), attribute.InputType },
+                        { nameof(attribute.CanWrite), attribute.CanWrite }
+                    };
+                }
+            }
+        }
+
+        return metadata;
     }
 
     private string toCamelCase(string @string)

@@ -6,12 +6,12 @@ const ArrayDisplay = ({ children, noOfColumns, maxItems, gap }) => {
     const noOfItemsToDisplay = children?.length ? Math.min(children.length, maxItems || children.length) : 0;
 
     const style = {
-        gridTemplateColumns: `repeat(${Math.min(children.length ?? 0, noOfColumns ?? 3)}, 1fr)`,
+        gridTemplateColumns: `repeat(${Math.min(children?.length ?? 0, noOfColumns ?? 3)}, 1fr)`,
         gap: gap != null ? `${gap}px` : '20px'
     }
     return (
         <div className="array" style={style}>
-            { children.slice(0, noOfItemsToDisplay) }
+            { children?.slice(0, noOfItemsToDisplay) }
         </div>
     )
 };

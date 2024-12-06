@@ -15,7 +15,7 @@ const ArrayDisplay__edit = forwardRef((props, ref) => {
 
 
     if (childReferences.current.length !== props.children?.length) {
-        childReferences.current = Array(props.children.length)
+        childReferences.current = Array(props.children?.length ?? 0)
             .fill()
             .map((_, i) => childReferences.current[i] || React.createRef());
     }
@@ -51,9 +51,9 @@ const ArrayDisplay__edit = forwardRef((props, ref) => {
                         const child = deserializeChildren(newProperties.children)[index];
                         const Component = EditableComponentMap[`${child.type}__edit`];
 
-                        return Component ? <Component ref={nextRef} {...child} /> : <div>Test</div>;
+                        return Component ? <Component ref={nextRef} {...child} onAddChildClick={props.onAddChildClick} /> : <div>Test</div>;
                     })}
-                    <AddChildButton />
+                    <AddChildButton id={props.id} onAddChildClick={props.onAddChildClick} />
                 </>
             </Accordion>
         </Base__edit>

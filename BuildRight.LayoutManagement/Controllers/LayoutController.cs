@@ -22,8 +22,9 @@ public class LayoutController : ControllerBase
     public IActionResult Layouts([FromBody] LayoutGetRequest request)
     {
         var layouts = _layoutService.GetLayoutList(request);
+        var test = _responseUtil.AsPropertyList(layouts.ToArray());
 
-        return layouts.Any() ? Ok(new { layouts }) : NoContent();
+        return layouts.Any() ? Ok(new { layouts = test }) : NoContent();
     }
 
     [HttpGet("{page}")]
@@ -46,7 +47,14 @@ public class LayoutController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> UpsertLayout(LayoutAddRequest request)
     {
-        await _layoutService.UpsertLayout(request);
+        if (!string.IsNullOrEmpty(request.ParentId))
+        {
+            await _layoutService.AddChild(request);
+        }
+        else
+        {
+            await _layoutService.UpsertLayout(request);
+        }
 
         return Ok();
     }

@@ -104,4 +104,24 @@ public class LayoutService
             }
         }
     }
+
+    public async Task AddChild(LayoutAddRequest request)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(request.ParentId);
+
+        // check if parent exists
+        var parent = _repository.GetElement(request.ParentId);
+
+        if (parent is LayoutWithChildren layoutWithChildren)
+        {
+            var newChildren = new List<Layout>(layoutWithChildren.Children ?? []);
+
+            List<Layout> children = _jsonToLayoutService.ToLayouts(request.Properties);
+            newChildren.AddRange(children);
+
+            layoutWithChildren.Children = newChildren;
+
+            await _repository.UpdateElement(layoutWithChildren);
+        }
+    }
 }

@@ -5,6 +5,7 @@ import AdminRenderer from "../../AdminRenderer";
 import { EditableComponentMap } from "../maps/componentMap";
 import * as React from "react";
 import Accordion from "./Accordion";
+import AddChildButton from "./AddChildButton";
 
 const Section__edit = forwardRef((props, ref) => {
     const childReferences = useRef([]);
@@ -40,12 +41,15 @@ const Section__edit = forwardRef((props, ref) => {
         <Base__edit id={props.id} type={props.type }>
             <TextInput id={`${props.id}-backgroundColor`} label="Background Color" placeholder='Background Color' onChange={(e) => handlePropChangeString('backgroundColor', e.target.value)} value={newProperties.backgroundColor} />
             <Accordion>
-                {childReferences.current.map((nextRef, index) => {
-                    const child = deserializeChildren(newProperties.children)[index];
-                    const Component = EditableComponentMap[`${child.type}__edit`];
+                <>
+                    {childReferences.current.map((nextRef, index) => {
+                        const child = deserializeChildren(newProperties.children)[index];
+                        const Component = EditableComponentMap[`${child.type}__edit`];
 
-                    return Component ? <Component ref={nextRef} {...child} /> : <div>Test</div>;
-                }) }
+                        return Component ? <Component ref={nextRef} {...child} onAddChildClick={props.onAddChildClick} /> : <div>Test</div>;
+                    })}
+                    <AddChildButton id={props.id} onAddChildClick={props.onAddChildClick} />
+                </>
             </Accordion>
         </Base__edit>
     )

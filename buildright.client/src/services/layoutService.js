@@ -23,13 +23,24 @@ export const getElement = async (id) => {
     }
 }
 
-export const updateElement = async (props) => {
-    const options = fetchOptions({ properties: props }, 'POST');
+export const updateElement = async (props, parentId) => {
+    const options = fetchOptions({ properties: props, parentId: parentId }, 'POST');
     const { status, response } = await fetchData(BASE_URL_LAYOUT, 'Layout', options);
 
     if (!status) {
         console.error(response);
     } else {
         return response.layout;
+    }
+}
+
+export const getAvailableLayouts = async (name, type) => {
+    const options = fetchOptions({ name: name, type: type }, 'POST');
+    const { status, response } = await fetchData(BASE_URL_LAYOUT, 'Layout/Types', options);
+
+    if (!status) {
+        console.error(response);
+    } else {
+        return response.layouts;
     }
 }
