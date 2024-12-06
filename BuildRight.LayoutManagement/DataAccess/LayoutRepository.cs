@@ -181,6 +181,12 @@ public class LayoutRepository
         }
     }
 
+    /// <summary>
+    /// Delete child of an element
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<bool> DeleteChildAsync(Layout parent, string id)
     {
         if (parent is LayoutWithChildren layoutWithChildren)
