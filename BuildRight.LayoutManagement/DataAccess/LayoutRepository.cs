@@ -218,7 +218,7 @@ public class LayoutRepository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Layout? GetParentElement(string id)
+    private Layout? GetParentElement(string id)
     {
         var documents = _layouts.Find(FilterDefinition<BsonDocument>.Empty).ToList();
 
