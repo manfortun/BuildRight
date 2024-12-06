@@ -7,6 +7,7 @@ import NumberInput from "./NumberInput";
 import { EditableComponentMap } from "../maps/componentMap";
 import Accordion from "./Accordion";
 import AddChildButton from "./AddChildButton";
+import { useEffect } from "react";
 
 const ArrayDisplay__edit = forwardRef((props, ref) => {
     const childReferences = useRef([]);
@@ -51,9 +52,9 @@ const ArrayDisplay__edit = forwardRef((props, ref) => {
                         const child = deserializeChildren(newProperties.children)[index];
                         const Component = EditableComponentMap[`${child.type}__edit`];
 
-                        return Component ? <Component ref={nextRef} {...child} onAddChildClick={props.onAddChildClick} /> : <div>Test</div>;
+                        return Component ? <Component ref={nextRef} {...child} onAddChildClick={props.onAddChildClick} onDeleteElementClick={props.onDeleteElementClick} /> : <div>Not implemented</div>;
                     })}
-                    <AddChildButton id={props.id} onAddChildClick={props.onAddChildClick} />
+                    <AddChildButton id={props.id} title='Add child' onAddChildClick={props.onAddChildClick} />
                 </>
             </Accordion>
         </Base__edit>

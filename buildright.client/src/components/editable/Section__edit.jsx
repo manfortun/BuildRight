@@ -12,7 +12,7 @@ const Section__edit = forwardRef((props, ref) => {
     const [newProperties, setNewProperties] = useState({...props});
 
     if (childReferences.current.length !== props.children?.length) {
-        childReferences.current = Array(props.children.length)
+        childReferences.current = Array(props.children?.length ?? 0)
             .fill()
             .map((_, i) => childReferences.current[i] || React.createRef());
     }
@@ -38,7 +38,7 @@ const Section__edit = forwardRef((props, ref) => {
     }
 
     return (
-        <Base__edit id={props.id} type={props.type }>
+        <Base__edit {...props }>
             <TextInput id={`${props.id}-backgroundColor`} label="Background Color" placeholder='Background Color' onChange={(e) => handlePropChangeString('backgroundColor', e.target.value)} value={newProperties.backgroundColor} />
             <Accordion>
                 <>
@@ -46,9 +46,9 @@ const Section__edit = forwardRef((props, ref) => {
                         const child = deserializeChildren(newProperties.children)[index];
                         const Component = EditableComponentMap[`${child.type}__edit`];
 
-                        return Component ? <Component ref={nextRef} {...child} onAddChildClick={props.onAddChildClick} /> : <div>Test</div>;
+                        return Component ? <Component ref={nextRef} {...child} onAddChildClick={props.onAddChildClick} onDeleteElementClick={props.onDeleteElementClick} /> : <div>Not implemented</div>;
                     })}
-                    <AddChildButton id={props.id} onAddChildClick={props.onAddChildClick} />
+                    <AddChildButton id={props.id} title='Add child' onAddChildClick={props.onAddChildClick} />
                 </>
             </Accordion>
         </Base__edit>

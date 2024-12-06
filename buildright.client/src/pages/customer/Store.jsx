@@ -45,7 +45,7 @@ const Store = () => {
                 <PromoBar clickable={promo.clickable} key={promo.title} image={promo.image} />
             ))}
 
-            {newArrivals.length > 0 && (
+            {newArrivals?.length > 0 && (
                 <Section>
                     <SectionTitle label="New Arrivals" />
                     <CategorizedItemArrayDisplay items={newArrivals} />

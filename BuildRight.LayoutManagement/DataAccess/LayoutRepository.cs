@@ -119,7 +119,7 @@ public class LayoutRepository
         _layouts.InsertOne(bsonDocument);
     }
 
-    public async Task UpdateElement(Layout request)
+    public async Task UpdateElementAsync(Layout request)
     {
         var parentElement = GetParentElement(request.Id);
         var layout = GetElement(request.Id);
@@ -161,6 +161,56 @@ public class LayoutRepository
         }
 
         return parentElement;
+    }
+
+    public async Task DeleteElementAsync(string id)
+    {
+        var element = this.GetElement(id);
+        var parent = this.GetParentElement(id);
+
+        if (element is null || parent is null) return;
+
+        if (parent.Id == id)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
+            _layouts.DeleteOne(filter);
+        }
+        else
+        {
+            await DeleteChildAsync(parent, id);
+        }
+    }
+
+    public async Task<bool> DeleteChildAsync(Layout parent, string id)
+    {
+        if (parent is LayoutWithChildren layoutWithChildren)
+        {
+            if (layoutWithChildren.Children is not null)
+            {
+                if (layoutWithChildren.Children.Any(c => c.Id == id) == true)
+                {
+                    layoutWithChildren.Children = layoutWithChildren.Children.Where(c => c.Id != id);
+                    await UpdateElementAsync(layoutWithChildren);
+
+                    return true;
+                }
+                else
+                {
+                    foreach (var child in layoutWithChildren.Children)
+                    {
+                        if (await DeleteChildAsync(child, id)) return true;
+                    }
+
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>

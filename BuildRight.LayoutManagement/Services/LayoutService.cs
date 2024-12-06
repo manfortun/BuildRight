@@ -84,7 +84,7 @@ public class LayoutService
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    public async Task UpsertLayout(LayoutAddRequest request)
+    public async Task UpsertLayoutAsync(LayoutAddRequest request)
     {
         List<Layout> layoutsList = _jsonToLayoutService.ToLayouts(request.Properties);
 
@@ -96,7 +96,7 @@ public class LayoutService
 
             if (!string.IsNullOrEmpty(id) && this.GetElement(id) is not null)
             {
-                await _repository.UpdateElement(layout);
+                await _repository.UpdateElementAsync(layout);
             }
             else
             {
@@ -105,7 +105,7 @@ public class LayoutService
         }
     }
 
-    public async Task AddChild(LayoutAddRequest request)
+    public async Task AddChildAsync(LayoutAddRequest request)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(request.ParentId);
 
@@ -121,7 +121,12 @@ public class LayoutService
 
             layoutWithChildren.Children = newChildren;
 
-            await _repository.UpdateElement(layoutWithChildren);
+            await _repository.UpdateElementAsync(layoutWithChildren);
         }
+    }
+
+    public async Task DeleteElementAsync(string id)
+    {
+        await _repository.DeleteElementAsync(id);
     }
 }

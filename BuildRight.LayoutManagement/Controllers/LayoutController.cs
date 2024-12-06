@@ -49,12 +49,20 @@ public class LayoutController : ControllerBase
     {
         if (!string.IsNullOrEmpty(request.ParentId))
         {
-            await _layoutService.AddChild(request);
+            await _layoutService.AddChildAsync(request);
         }
         else
         {
-            await _layoutService.UpsertLayout(request);
+            await _layoutService.UpsertLayoutAsync(request);
         }
+
+        return Ok();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteLayout(string id)
+    {
+        await _layoutService.DeleteElementAsync(id);
 
         return Ok();
     }

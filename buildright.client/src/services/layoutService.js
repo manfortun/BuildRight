@@ -34,6 +34,17 @@ export const updateElement = async (props, parentId) => {
     }
 }
 
+export const deleteElement = async (id) => {
+    const options = fetchOptions({}, 'DELETE');
+    const { status, response } = await fetchData(BASE_URL_LAYOUT, `Layout/${id}`, options);
+
+    if (!status) {
+        console.error(response);
+    } else {
+        return response;
+    }
+}
+
 export const getAvailableLayouts = async (name, type) => {
     const options = fetchOptions({ name: name, type: type }, 'POST');
     const { status, response } = await fetchData(BASE_URL_LAYOUT, 'Layout/Types', options);
