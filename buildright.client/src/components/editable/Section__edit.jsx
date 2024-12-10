@@ -33,13 +33,13 @@ const Section__edit = forwardRef((props, ref) => {
         return y;
     }
 
-    const handlePropChangeString = (propName, value) => {
+    const handlePropChange = (propName, value) => {
         setNewProperties(prev => ({ ...prev, [propName]: value }));
     }
 
     return (
         <Base__edit {...props }>
-            <TextInput id={`${props.id}-backgroundColor`} label="Background Color" placeholder='Background Color' onChange={(e) => handlePropChangeString('backgroundColor', e.target.value)} value={newProperties.backgroundColor} />
+            <TextInput id={`${props.id}-backgroundColor`} label="Background Color" placeholder='Background Color' onChange={(e) => handlePropChange('backgroundColor', e.target.value)} value={newProperties.backgroundColor} />
             <Accordion>
                 <>
                     {childReferences.current.map((nextRef, index) => {

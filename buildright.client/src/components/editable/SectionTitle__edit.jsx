@@ -15,17 +15,13 @@ const SectionTitle__edit = forwardRef((props, ref) => {
         getProperties: () => newProperties
     }));
 
-    const handlePropChangeString = (propName, value) => {
+    const handlePropChange = (propName, value) => {
         setNewProperties(prev => ({ ...prev, [propName]: value }));
-    }
-
-    const handlePropChangeInt = (propName, value) => {
-        setNewProperties(prev => ({ ...prev, [propName]: Number(value) }));
     }
 
     return (
         <Base__edit {...props}>
-            <TextInput id={`${props.id}-label`} label="Label" placeholder='Label' onChange={(e) => handlePropChangeString('label', e.target.value)} value={newProperties.label} />
+            <TextInput id={`${props.id}-label`} label="Label" placeholder='Label' onChange={(e) => handlePropChange('label', e.target.value)} value={newProperties.label} />
         </Base__edit>
     )
 });

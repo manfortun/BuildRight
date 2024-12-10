@@ -37,15 +37,15 @@ const ArrayDisplay__edit = forwardRef((props, ref) => {
         return y;
     }
 
-    const handlePropChangeInt = (propName, value) => {
-        setNewProperties(prev => ({ ...prev, [propName]: Number(value) }));
+    const handlePropChange = (propName, value) => {
+        setNewProperties(prev => ({ ...prev, [propName]: value }));
     }
 
     return (
         <Base__edit {...props}>
-            <NumberInput id={`${props.id}-no-of-columns`} label='No. of columns' placeholder='No. of columns' value={newProperties.noOfColumns} onChange={(e) => handlePropChangeInt('noOfColumns', e.target.value) } />
-            <NumberInput id={`${props.id}-max-items`} label='Max no. of items to display' placeholder='Max no. of items to display' value={newProperties.maxItems} onChange={(e) => handlePropChangeInt('maxItems', e.target.value) } />
-            <NumberInput id={`${props.id}-gap`} label='Gap' placeholder='Gap' value={newProperties.gap} onChange={(e) => handlePropChangeInt('gap', e.target.value)} />
+            <NumberInput id={`${props.id}-no-of-columns`} label='No. of columns' placeholder='No. of columns' value={newProperties.noOfColumns} onChange={(e) => handlePropChange('noOfColumns', Number(e.target.value)) } />
+            <NumberInput id={`${props.id}-max-items`} label='Max no. of items to display' placeholder='Max no. of items to display' value={newProperties.maxItems} onChange={(e) => handlePropChange('maxItems', Number(e.target.value)) } />
+            <NumberInput id={`${props.id}-gap`} label='Gap' placeholder='Gap' value={newProperties.gap} onChange={(e) => handlePropChange('gap', Number(e.target.value))} />
             <Accordion>
                 <>
                     {childReferences.current.map((nextRef, index) => {

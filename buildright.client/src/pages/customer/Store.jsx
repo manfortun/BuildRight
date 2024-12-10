@@ -52,7 +52,6 @@ const Store = () => {
                 </Section>
             )}
 
-            <Section />
         </Page>
     )
 }

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 const NumberInput = ({ id, label, placeholder, value, onChange, required = false }) => {
+
     return (
         <div className="d-flex flex-column justify-content-center align-items-start">
             <label htmlFor={id} className={`form-label mt-3 ${required ? 'required' : ''}`}>{label}</label>

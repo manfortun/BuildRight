@@ -6,5 +6,5 @@ export const formatCurrency = (amount) => {
 };
 
 export const formatRating = (rating) => {
-    return parseFloat(rating.toFixed(1));
+    return parseFloat(rating?.toFixed(1) ?? 0);
 };

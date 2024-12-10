@@ -1,14 +1,13 @@
-import PropTypes from 'prop-types';
-import * as React from 'react';
-import { useRef, useState } from 'react';
-import Accordion from './Accordion';
-import AddChildButton from './AddChildButton';
+import { useState } from 'react';
 import Base__edit from './Base__edit';
 import NumberInput from './NumberInput';
-import { useImperativeHandle } from 'react';
-import { forwardRef } from 'react';
+import './styles/servicehighlight.css';
+import PropTypes from 'prop-types';
+import FileInput from './FileInput';
+import BooleanInput from './BooleanInput';
+import Accordion from './Accordion';
 
-const Hero__edit = forwardRef((props, ref) => {
+const BorderContainer__edit = ((props, ref) => {
     const childReferences = useRef([]);
     const [newProperties, setNewProperties] = useState({ ...props })
     const [isChildrenExpanded, setIsChildrenExpanded] = useState(false);
@@ -41,8 +40,9 @@ const Hero__edit = forwardRef((props, ref) => {
     }
 
     return (
-        <Base__edit {...props }>
-            <NumberInput id={`${props-id}-height` }  label='Height' placeholder='Height' value={newProperties.height } onChange={(e) => handlePropChange('height', Number(e.target.value)) } />
+        <Base__edit {...props}>
+            <NumberInput id={`${props.id}-height`} label='Height' placeholder='Height' value={newProperties.height} onChange={(e) => handlePropChange('height', Number(e.target.value)) } />
+            <FileInput id={`${props.id}-src`} label='Background image' placeholder='Background image' />
             <Accordion>
                 <>
                     {childReferences.current.map((nextRef, index) => {
@@ -58,4 +58,4 @@ const Hero__edit = forwardRef((props, ref) => {
     )
 });
 
-export default Hero__edit;
+export default BorderContainer__edit;
